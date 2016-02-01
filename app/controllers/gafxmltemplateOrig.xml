@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guiData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="guiDataTemplate.xsd">
+	<type name="issue" base="string" minLength="1" maxLength="10" displayAs="textlist">
+		<pattern>[0-9]{2}(\.[0-9]{2})*</pattern>
+	</type>
+	<type name="release" base="string" minLength="1" maxLength="10" displayAs="text">
+		<pattern>[0-9]+\.[0-9]+(\.[0-9]+)*</pattern>
+	</type>
+	<type name="defaultType" base="string" minLength="1" maxLength="10" displayAs="text"/>
+	<type name="devcd" base="string" minLength="1" maxLength="10" displayAs="text"/>
+	<type name="devcdList" base="string" minLength="1" maxLength="10" displayAs="ddlist"/>
+	<type name="devId" base="string" minLength="1" maxLength="10" displayAs="text"/>
+	<type name="range" base="string" minLength="1" maxLength="10" displayAs="text"/>
+	<type name="unitId-frameData" base="string" minLength="1" maxLength="10" displayAs="textlist"/>
+	<type name="temsAction" base="string" minLength="1" maxLength="10" displayAs="checkbox" domain="actionMappings" />
+	<type name="provCmd" base="string" minLength="1" maxLength="10"  displayAs="checkbox" domain="cmdMappings"/>
+	<type name="tl1AID" base="string" minLength="1" maxLength="10" displayAs="text"/>
+	<type name="notes" base="string" maxLength="250" displayAs="textarea"/>
+	<type name="script" base="string" maxLength="250" displayAs="script"/>
+	<type name="neValues" base="string" minLength="1" maxLength="10" displayAs="textlist"/>
+	<type name="ccTypeList" base="string" minLength="1" maxLength="10" displayAs="textlist"/>
+	<type name="siglvlList" base="string" minLength="1" maxLength="10" displayAs="textlist"/>
+	<nameMappings>
+		<mapping name="release">Transport Release</mapping>		
+		<mapping name="issue">Issue</mapping>		
+		<mapping name="devcd">Device Code</mapping>
+		<mapping name="devId-unitMapping">Device ID Start/Unit Mapping</mapping>
+		<mapping name="devidRange">Device ID Range</mapping>
+		<mapping name="unitId-frameData">Unit ID/Frame Data</mapping>
+		<mapping name="protectDevId">Protect Device ID</mapping>
+		<mapping name="parentDevcd">Parent Device Code</mapping>
+		<mapping name="parentDevid">Parent Device ID</mapping>
+		<mapping name="temsAction">Transport Action</mapping>
+		<mapping name="provCmd">Provisioning Commands</mapping>
+		<mapping name="tl1AID">TL1 AID</mapping>
+		<mapping name="neIssue">Network Element Issue(s)</mapping>
+		<mapping name="fieldName">Field Name</mapping>
+		<mapping name="validValues">Valid Values</mapping>
+		<mapping name="neValue">NE Value</mapping>
+		<mapping name="notes">Notes</mapping>
+		<mapping name="provSequence">Provisioning Sequence</mapping>
+		<mapping name="parmScrLabel">Parameter Screen Label</mapping>
+		<mapping name="neParm">NE Parm (Tag Name)</mapping>
+		<mapping name="parmValues">Values</mapping>
+		<mapping name="temsAction">Action</mapping>
+		<mapping name="optReq">Opt/Req</mapping>
+		<mapping name="temsDefault">Transport Default</mapping>
+		<mapping name="neDefault">NE Default</mapping>
+		<mapping name="tirksFT">TIRKS FT</mapping>
+		<mapping name="ftol">FTOL</mapping>
+		<mapping name="ftoDefault">FTO Default</mapping>
+		<mapping name="fcd">FCD</mapping>
+		<mapping name="scp">SCP</mapping>
+		<mapping name="ccParm">Parameters and Secondary From/To Termination ID</mapping>
+		<mapping name="ccType">Cross Connect Type</mapping>
+		<mapping name="siglvl">Signal Level</mapping>
+		<mapping name="fromToDevcd">From/To Device Code</mapping>
+		<mapping name="toFromDevcd">To/From Device Code</mapping>
+		<mapping name="fromToTerm">From/To Termination ID</mapping>
+		<mapping name="toFromTerm">To/From Termination ID</mapping>
+		<mapping name="logDevicesCreated">Logical Devices Created</mapping>
+	</nameMappings>
+	<actionMappings mapValue="action">
+		<mapping action="Add">Add</mapping>
+		<mapping action="Delete">Delete</mapping>
+		<mapping action="Rearrange">Rearrange</mapping>
+		<mapping action="RearrangeAdd">Rearrange-Add</mapping>
+		<mapping action="RearrangeDelete">Rearrange-Delete</mapping>
+	</actionMappings>
+	<cmdMappings mapValue="cmd">
+		<mapping cmd="Transmit">Transmit</mapping>
+		<mapping cmd="Simulate Transmit">Simulate Transmit</mapping>
+		<mapping cmd="Simulate Undo">Simulate Undo</mapping>
+		<mapping cmd="Undo">Undo</mapping>
+		<mapping cmd="Validate">Validate</mapping>
+		<mapping cmd="Verify">Verify</mapping>
+		<mapping cmd="Verify Transmit">Verify Transmit</mapping>
+	</cmdMappings>
+	<table number="3-1" name="releaseToIssueMap" displayName="Release to Network Element Issue Level Mapping">
+		<column name="release" type="release" minOccurs="1" description=" Transport Release"/>
+		<column name="neIssue" type="issue" minOccurs="1" maxOccurs="10" description="NE Issues"/>
+		<column name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
+	</table>
+	<table number="3-2" name="neSummary" displayName="Network Element Summary/Transport Support">
+		<column name="fieldName" type="defaultType" minOccurs="1" description=" Transport Release"/>
+		<column name="validValues" type="defaultType" minOccurs="1" maxOccurs="10" description="NE Issue"/>
+		<column name="neValue" type="defaultType" minOccurs="1" description=" Transport Release"/>
+		<column name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
+	</table>
+	<table number="3-3" name="equipProv" displayName="Equipment Provisioning">
+		<column name="issue" type="issue" minOccurs="1" description=" issue"/>
+		<column name="devcd" type="devcd" minOccurs="1" maxOccurs="1" description="Device Code"/>
+		<column name="devId-unitMapping" type="devId" minOccurs="1" maxOccurs="1" description=" Device ID unit mapping"/>
+		<column name="devidRange" type="range" minOccurs="1" maxOccurs="1" description=" Device ID Range"/>
+		<column name="unitId-frameData" type="unitId-frameData" minOccurs="1" maxOccurs="10" description=" Frame Data"/>
+		<column name="protectDevId" type="devId" minOccurs="1" maxOccurs="1" description="Protect Device ID"/>
+		<column name="parentDevcd" type="devcd" minOccurs="1" maxOccurs="1" description="Protect Device Code"/>
+		<column name="parentDevid" type="devId" minOccurs="1" maxOccurs="1" description=" Parent Device ID"/>
+		<column name="temsAction" type="temsAction" minOccurs="1" maxOccurs="10" description="Transport Action"/>
+		<column name="provCmd" type="provCmd" minOccurs="1" maxOccurs="10" description="Provisioning Command"/>
+		<column name="tl1AID" type="tl1AID" minOccurs="1" maxOccurs="10" description=" tl1 AID"/>
+		<column name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
+	</table>
+	<table number="3-4" name="devParm" displayName="Device Provisioning Parameters">
+		<column name="issue" type="issue" minOccurs="1" description=" issue"/>
+		<column name="devcd" type="devcdList" minOccurs="1" maxOccurs="1" description="Device Code">
+		<varTable name="equipProv" varColumn="devcd"></varTable>
+		</column>
+		<column name="parmScrLabel" type="defaultType" minOccurs="1" maxOccurs="1" description="Parameter Screen Label"/>
+		<column name="neParm" type="defaultType" minOccurs="1" maxOccurs="1" description="NE Parm (Tag Name)"/>
+		<column name="parmValues" type="neValues" minOccurs="1" maxOccurs="1" description="Values"/>
+		<column name="temsAction" type="temsAction" minOccurs="1" maxOccurs="10" description="Action"/>
+		<column name="optReq" type="defaultType" minOccurs="1" maxOccurs="1" description="Opt/Req"/>
+		<column name="temsDefault" type="defaultType" minOccurs="1" maxOccurs="1" description="Transport Default"/>
+		<column name="neDefault" type="defaultType" minOccurs="1" maxOccurs="1" description="NE Default"/>
+		<column name="tirksFT" type="defaultType" minOccurs="1" maxOccurs="10" description="TIRKS FT"/>
+		<column name="ftol" type="defaultType" minOccurs="1" maxOccurs="10" description="FTOL"/>
+		<column name="ftoDefault" type="defaultType" minOccurs="1" maxOccurs="10" description="FTO Default"/>
+		<column name="fcd" type="defaultType" minOccurs="1" maxOccurs="10" description="FCD"/>
+		<column name="scp" type="defaultType" minOccurs="1" maxOccurs="10" description="SCP"/>
+		<column name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
+	</table>
+	<table number="3-5" name="equipProvSeq" displayName="EQ Provisioning Sequence of Add,Delete  and Rearrange Orders">
+		<column name="issue" type="issue" minOccurs="1" description=" issue"/>
+		<column name="devcd" type="devcd" minOccurs="1" maxOccurs="1" description="Device Code"/>
+		<column name="temsAction" type="temsAction" minOccurs="1" maxOccurs="10" description="Transport Action"/>
+		<column name="provCmd" type="provCmd" minOccurs="1" maxOccurs="10" description="Provisioning Command"/>
+		<column name="provSequence" type="script" minOccurs="1" maxOccurs="10" description=" Provisioning Sequence">
+			<varTable name="devParm" varColumn="neParm">
+				<filterVarTable whereTableColName="devcd" equalsVarTableColName="devcd"></filterVarTable>
+				<filterVarTable whereTableColName="temsAction" equalsVarTableColName="temsAction"></filterVarTable>
+			</varTable>
+			<varTable name="equipProv" varColumn="devId-unitMapping">
+				<filterVarTable whereTableColName="devcd" equalsVarTableColName="devcd"></filterVarTable>
+				<filterVarTable whereTableColName="temsAction" equalsVarTableColName="temsAction"></filterVarTable>
+			</varTable>
+		</column>
+		<column name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
+	</table>
+	<table number="3-6" name="ccParmByType" displayName="Cross Connect Provisioning Parameters By CC Type">
+		<column name="issue" type="issue" minOccurs="1" description=" issue"/>
+		<column name="ccType" type="ccTypeList" minOccurs="1" maxOccurs="1" description="Cross Connect Type"/>
+		<column name="siglvl" type="siglvlList" minOccurs="1" maxOccurs="1" description="Signal Levels"/>
+		<column name="ccParm" type="defaultType" minOccurs="1" maxOccurs="1" description="Parameters and Secondary From/To Termination ID"/>
+		<column name="temsAction" type="temsAction" minOccurs="1" maxOccurs="10" description="Transport Action"/>
+		<column name="provCmd" type="provCmd" minOccurs="1" maxOccurs="10" description="Provisioning Command"/>
+		<column name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
+	</table>
+	<table number="3-7" name="ccParmBySiglvl" displayName="Cross Connect Provisioning Parameters By Signal Level">
+		<column name="issue" type="issue" minOccurs="1" description=" issue"/>
+		<column name="siglvl" type="defaultType" minOccurs="1" maxOccurs="1" description="Signal Level"/>
+		<column name="fromToDevcd" type="defaultType" minOccurs="1" maxOccurs="1" description="From/To Device Code"/>
+		<column name="toFromDevcd" type="defaultType" minOccurs="1" maxOccurs="1" description="To/From Device Code"/>
+		<column name="fromToTerm" type="defaultType" minOccurs="1" maxOccurs="1" description="From/To Termination ID"/>
+		<column name="toFromTerm" type="defaultType" minOccurs="1" maxOccurs="1" description="To/From Termination ID"/>
+		<column name="logDevicesCreated" type="defaultType" minOccurs="1" maxOccurs="10" description="Logical Devices Created"/>
+		<column name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
+	</table>
+	<table number="3-8" name="crossConnectParm" displayName="Dynamic Parameters for CC Provisioning">
+		<column name="issue" type="issue" minOccurs="1" description=" issue"/>
+		<column name="parmScrLabel" type="defaultType" minOccurs="1" maxOccurs="1" description="Parameter Screen Label"/>
+		<column name="neParm" type="defaultType" minOccurs="1" maxOccurs="1" description="NE Parm (Tag Name)"/>
+		<column name="parmValues" type="neValues" minOccurs="1" maxOccurs="1" description="Values"/>
+		<column name="temsAction" type="temsAction" minOccurs="1" maxOccurs="10" description="Action"/>
+		<column name="optReq" type="defaultType" minOccurs="1" maxOccurs="1" description="Opt/Req"/>
+		<column name="temsDefault" type="defaultType" minOccurs="1" maxOccurs="1" description="Transport Default"/>
+		<column name="neDefault" type="defaultType" minOccurs="1" maxOccurs="1" description="NE Default"/>
+		<column name="tirksFT" type="defaultType" minOccurs="1" maxOccurs="10" description="TIRKS FT"/>
+		<column name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
+	</table>
+	<table number="3-9" name="ccProvSeq" displayName="CC Provisioning Sequence of Add,Delete Orders">
+		<column name="issue" type="issue" minOccurs="1" description=" issue"/>
+		<column name="ccType" type="ccTypeList" minOccurs="1" maxOccurs="1" description="Cross Connect Type"/>
+		<column name="siglvl" type="siglvlList" minOccurs="1" maxOccurs="1" description="Signal Levels"/>
+		<column name="temsAction" type="temsAction" minOccurs="1" maxOccurs="10" description="Transport Action"/>
+		<column name="provCmd" type="provCmd" minOccurs="1" maxOccurs="10" description="Provisioning Command"/>
+		<column name="provSequence" type="script" minOccurs="1" maxOccurs="10" description=" Provisioning Sequence">
+			<varTable name="crossConnectParm" varColumn="neParm"></varTable>
+		</column>
+		<column name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
+	</table>
+</guiData>

@@ -1,0 +1,166 @@
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+.app-modal-window .modal-dialog {
+  margin-top:-10px;
+  width: 1600px;
+}
+
+.vmi-modal-window .modal-dialog {
+  margin-top:-10px;
+  width: 1320px;
+  height: 750px;
+}
+
+.treeView-modal-window .modal-dialog {
+  margin-top:-10px;
+  width: 1280px;
+  height: 950px;
+}
+
+.changed-row {
+  background-color: red;
+}
+.grip{
+    width:20px;
+    height:20px;
+    margin-top:-10px;
+    background-image:url('http://lorempixel.com/20/20/abstract');
+    margin-left:-5px;
+    position:relative;
+    z-index:88;
+    cursor:e-resize;
+}
+
+.grip:hover{
+    background-position:20px 0px;
+}
+
+.dragging .grip{
+    background-position:40px 0px;
+}
+
+
+.selected {
+  background-color: gold;
+}
+
+.td-fixedwidth {
+  width:200px;
+  max-width:200px;
+  min-width:200px;
+  word-wrap: break-word;
+}
+
+.th-fixedwidth {
+  width:200px;
+  max-width:200px;
+  min-width:200px;
+  word-wrap: break-word;
+  height:20px;
+  left:0;
+}
+
+.outer { font:normal 14px/18px 'latomedium', arial, sans-serif;
+position:relative;
+padding:50px 0 30px 0;
+background:#eee;
+margin:0 0 50px 0;
+}
+.innera {
+overflow-x: hidden;
+overflow-y: scroll;
+height:460px;
+background:#eee;
+}
+.outer table {
+  width: auto;
+  table-layout: fixed;
+}
+.outer table caption {
+position:absolute;
+width:648px;
+text-align:center;
+top:0;
+left:0;
+height:20px;
+background:#697210;
+border:1px solid #fff;
+color:#fff;
+}
+.outer thead tr {
+position:absolute;
+top:0;
+height:20px;
+left:0;
+}
+.outer td {
+position:relative;
+text-align:center; 
+border:1px solid #000;
+word-wrap: break-word;
+top:80;
+}
+.outer tfoot {
+position:absolute;
+width:648px;
+text-align:center;
+background:#f0c992; 
+border:1px solid #000;
+color:#000;
+bottom:0;
+left:0
+}
+.outer th, .outer td {
+width:10em; 
+text-align:left;
+word-wrap: break-word;
+}
+/*
+.outer th {
+background:#724a10; 
+color:#fff;}
+*/
+.outer .dk {background:#fff;
+}
+
+/**********************/
+.rowRemoved {
+  text-decoration:line-through;
+}
+
+.rowChanged {
+  font-style: italic; 
+}
+
+.rowAdded {
+  text-decoration:underline;
+}

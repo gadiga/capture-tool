@@ -1,0 +1,180 @@
+<section data-ng-controller="GafxmlsController" data-ng-init="findOne()" class="pull-left">
+	<div class="row">
+	<div class="col-sm-12">
+		<h4 data-ng-bind="gafxml.name"></h4>
+		<small>
+			<em class="text-muted">
+				Posted on
+				<span data-ng-bind="gafxml.created | date:'mediumDate'"></span>
+				by
+				<span data-ng-bind="gafxml.user.displayName"></span>
+				<span ng-show="gafxml.eqEditUser" class="bg-info">
+					| EQ being updated by
+					<span data-ng-bind="gafxml.eqEditUser.displayName"></span>
+				</span>
+				<span ng-show="gafxml.ccEditUser" class="bg-success">
+					| EQ being updated by
+					<span data-ng-bind="gafxml.ccEditUser.displayName"></span>
+				</span>
+				<span ng-show="gafxml.ftEditUser" class="bg-warning">
+					| EQ being updated by
+					<span data-ng-bind="gafxml.ftEditUser.displayName"></span>
+				</span>
+			</em>
+		</small>
+		<div class="well well-sm">
+			<p>
+			<a class="btn btn-info btn-sm" data-ng-click="prepareDownload()" toggle-data="toggle" title="Download Central Appendix (Editable version)" download="CentralAppendix.json" ng-href="{{ downloadurl }}">
+				<i class="glyphicon glyphicon-save"></i>
+			</a>
+			<a class="btn btn-primary btn-sm" data-ng-show="convertedXML === ''" data-ng-click="generateXML()" toggle-data="toggle" title="Show XML">
+				<i class="glyphicon glyphicon-sunglasses"></i>
+			</a>
+			<a class="btn btn-primary btn-sm" data-ng-show="convertedXML != ''" toggle-data="toggle" title="Hide XML" data-ng-click="convertedXML = ''">
+				<i class="glyphicon glyphicon-object-align-bottom"></i>
+			</a>
+	        <a class="btn btn-primary btn-sm" data-ng-show="convertedXML != ''" data-ng-click="openVMITool('lg');" >
+	            <i class="glyphicon glyphicon-wrench" toggle-data="toggle" title="VMI Tool"></i>
+	        </a>
+	        <a class="pull-right btn btn-danger btn-sm" data-ng-click="openDeleteConfirm();" data-ng-show="checkDeleteAllow()">
+				<i class="glyphicon glyphicon-trash" toggle-data="toggle" title="Delete Document"></i>
+			</a>			
+	        <a class="pull-right btn" data-ng-show="checkDeleteAllow()"></a>
+	        <a class="pull-right btn btn-info btn-sm" data-ng-click="confirmFreeze();" data-ng-show="checkFreezeAllow()">
+				<i class="glyphicon glyphicon glyphicon-ice-lolly-tasted" toggle-data="toggle" title="Freeze Document"></i>
+			</a>			
+	        <a class="pull-right btn" data-ng-show="checkFreezeAllow()"></a>
+			<span data-ng-show="checkEditAllow()" class="pull-right alert alert-warning">
+				<small>
+						<a class="pull-right btn btn-primary alert-danger btn-sm" data-ng-click="setEditType('EQ', currentlyEditing[0].allowed);setEditType('CC', currentlyEditing[1].allowed);setEditType('FT', currentlyEditing[2].allowed);" href="/#!/gafxmls/{{gafxml._id}}/edit" data-ng-show="checkEditAllow()">
+							<i class="glyphicon glyphicon-edit" toggle-data="toggle" title="Edit Document"></i>
+						</a>
+						<a class="pull-right btn btn-xs" data-ng-show="checkEditAllow()"></a>
+				
+						<label class="pull-right btn-warning" data-ng-show="(authentication.user && (gafxml.ftEditUser===undefined ? true:authentication.user._id === gafxml.ftEditUser._id))">Flowthru</label>
+						<input data-ng-show="(authentication.user && (gafxml.ftEditUser===undefined ? true:authentication.user._id === gafxml.ftEditUser._id))" ng-model="currentlyEditing[2].allowed" data-ng-change="setEditType('FT', currentlyEditing[2].allowed)" class="pull-right" type="checkbox" name="editDocument" value="FT">
+						<label class="pull-right btn-success" data-ng-show="(authentication.user && (gafxml.ccEditUser===undefined ? true:authentication.user._id === gafxml.ccEditUser._id))">CrossConnect</label>
+						<input data-ng-show="(authentication.user && (gafxml.ccEditUser===undefined ? true:authentication.user._id === gafxml.ccEditUser._id))" ng-model="currentlyEditing[1].allowed" data-ng-change="setEditType('CC', currentlyEditing[1].allowed)" class="pull-right" type="checkbox" name="editDocument" value="CC">
+						<label class="pull-right btn-info" data-ng-show="(authentication.user && (gafxml.eqEditUser===undefined ? true:authentication.user._id === gafxml.eqEditUser._id))">Equipment</label>
+						<input data-ng-show="(authentication.user && (gafxml.eqEditUser===undefined ? true:authentication.user._id === gafxml.eqEditUser._id))" ng-model="currentlyEditing[0].allowed" data-ng-change="setEditType('EQ', currentlyEditing[0].allowed)" class="pull-right" type="checkbox" name="editDocument" value="EQ">
+				</small>
+			</span>
+			<a class="pull-right btn btn-sm"></a>
+			<a class="pull-right btn btn-sm" href="/#!/gafxmls" data-ng-show="authentication.user">
+				<i class="glyphicon glyphicon-th-list" toggle-data="toggle" title="Show Document List"></i>
+			</a>
+	        <a class="pull-right btn btn-sm" href="/#!" data-ng-hide="authentication.user">
+	            <i class="glyphicon glyphicon-th-list" toggle-data="toggle" title="Show Document List"></i>
+	        </a>
+			</p>
+			<div data-ng-show="convertedXML != ''" class="field-show-hide"><textarea class="form-control" rows="10" id="xmlarea" ng-model="convertedXML"></textarea></div>
+	        <div data-ng-show="loadGIF" class="field-show-hide"><img alt="Loading..." class="img-rectangle" src="modules/gafxmls/img/loading.gif" /></div>
+		</div>
+		<div class="row pull-left">
+		    <table width="100%">
+		        <tr>
+		            <td align="left">
+		                <div class="panel panel-primary" resizable r-directions="['right']" r-flex="false" r-width="360">
+		                        <div class="panel-heading"><strong>Vendor</strong>:{{gafxml.vendor}} <strong>Model</strong>:{{gafxml.model}} <strong>Issue</strong>:{{gafxml.issue}} <strong>Version</strong>:{{gafxml.version}}</strong>
+		                        	<a class="btn btn-info btn-xs" role="button">Equipment</a><a class="btn btn-success btn-xs" role="button">Cross Connect</a><a class="btn btn-warning btn-xs" role="button">Flowthru</a>
+		                        </div>
+		                              <div class="panel-body" style="min-height: 550px; max-height: 550px; overflow-y: scroll;">
+		                                <div ng-repeat="tabl in gafxmlTables" class="vrepeat-animation">
+		                                	<div ng-if="tabl.$.tableType==='EQ'">
+		                                   		<button popover="{{tabl.$.displayName}}" popover-trigger="mouseenter" ng-click="openLoader('sm', tabl)" type="button" class="btn btn-xs btn-info">{{tabl.$.number}} - {{tabl.$.displayName}}</button><p/>
+		                                   	</div>
+		                                   	<div ng-if="tabl.$.tableType==='CC'">
+		                                   		<button popover="{{tabl.$.displayName}}" popover-trigger="mouseenter" ng-click="openLoader('sm', tabl)" type="button" class="btn btn-xs btn-success">{{tabl.$.number}} - {{tabl.$.displayName}}</button><p/>
+		                                   	</div>
+		                                   	<div ng-if="tabl.$.tableType==='FT'">
+		                                   		<button popover="{{tabl.$.displayName}}" popover-trigger="mouseenter" ng-click="openLoader('sm', tabl)" type="button" class="btn btn-xs btn-warning">{{tabl.$.number}} - {{tabl.$.displayName}}</button><p/>
+		                                   	</div>
+		                                </div>
+		                              </div>
+		                </div>
+		            </td>
+		            <td>
+		                <div class="panel panel-primary" resizable r-directions="['right']" r-flex="false" r-width="1400">
+		                        <div class="panel-heading"><strong>{{currentTable.$.number}} - {{currentTable.$.displayName}}</strong>
+							        <a class="btn btn-primary" ng-show="containsHierarchy(currentTable);" data-ng-click="openTreeView('lg');" >
+							            <i class="glyphicon glyphicon-grain" toggle-data="toggle" title="{{hierarchyTitle}}"></i>
+							        </a>
+					            	<mark><strong><a href="#" e-rows="7" e-cols="40" editable-textarea="currentTable.$.description" e-required e-placeholder="{{currentTable.$.displayName}}">{{ 'Table Description' }}</a></strong></mark>
+	                                <input type="text" class="pull-right" size="35" ng-model="searchText" style="color:black"><span class="label label-primary pull-right">Search</span>
+		                        </div>
+	                              <div class="panel-body" style="min-height: 600px; max-height: 600px; overflow-y: hidden; overflow-x: scroll;">
+	                                <p>
+	                                    <gafxml-table ng-init="readWrite='read'" currentTable="currentTable" editMode="read"/>
+	                                </p>
+	                              </div>
+		                </div>
+		            </td>
+		        </tr>
+		    </table>
+		</div>
+		<script type="text/ng-template" id="deleteConfirm.html">
+	        <div class="modal-header">
+	            <h3 class="modal-title">SERIOUSLY?????</h3>
+	        </div>
+	        <div class="modal-body">
+	            <strong>Are you absolutely & consciously sure you want to delete?</strong>
+	        </div>
+	        <div class="modal-footer">
+	            <button class="btn btn-primary" ng-click="okToDelete()">OK</button>
+	            <button class="btn btn-warning" ng-click="cancelDelete()">Cancel</button>
+	        </div>
+	    </script>
+
+
+	    <script type="text/ng-template" id="vmiTool.html">
+	        <div class="modal-header">
+	            <span><strong>VMI Tool</strong></span>&nbsp;&nbsp;&nbsp;<span><button onclick="window.history.back();">Go Back</button></span>
+	        </div>
+	        <div class="modal-body">
+	            <iframe frameborder="0" width="1280" height="750" ng-src="../modules/gafxmls/vmiTool.html"></iframe>
+	        </div>
+	        <div class="modal-footer">
+	            <button class="btn btn-warning btn-sm" ng-click="cancelDelete()">Close VMI Tool</button>
+	        </div>
+	    </script>
+
+
+	    <script type="text/ng-template" id="TreeView.html">
+	        <div class="modal-header">
+	            <strong>Equipment Hierarchy - {{gafxml.vendor}} - {{gafxml.model}} - {{gafxml.issue}} - {{gafxml.version}}</strong>
+	        </div>
+	        <div class="modal-body">
+	            <iframe frameborder="0" width="1280" height="850" ng-src="../modules/gafxmls/TreeView.html"></iframe>
+	        </div>
+	        <div class="modal-footer">
+	            <button class="btn btn-warning btn-sm" ng-click="cancelDelete()">Close Equipment Hierarchy</button>
+	        </div>
+	    </script>
+
+
+	    <script type="text/ng-template" id="blocklyEditor.html">
+	        <div class="modal-header">
+	            <strong>Blockly Editor</strong>
+	        </div>
+	        <div class="modal-body">
+	            <iframe frameborder="0" width="1500" height="800" ng-src="../modules/gafxmls/blockly-test-orig.html"></iframe>
+	        </div>
+	        <div class="modal-footer">
+	            <button class="btn btn-warning btn-sm" ng-click="cancelDelete()">Close Editor</button>
+	        </div>
+	    </script>
+
+
+	    <script type="text/ng-template" id="loader.html">
+	        <div class="modal-header bg-primary">
+	            <strong>Please wait Loading records....<i class="fa fa-spinner fa-spin fa-2x pull-center"></i></strong>
+	        </div>
+	        <!--<div class="modal-body">
+	            <mark>
+	            	<i class="fa fa-spinner fa-spin fa-2x pull-center"></i>
+	            </mark>
+	        </div>-->
+	    </script>
+	</div>
+	</div>
+</section>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="vmiToolApp" id="ng-app">
+<head>
+<meta charset="utf-8">
+<title>VMI Tool</title>
+<script>document.write('<base href="' + document.location + '" />');</script>
+<script src="../../lib/angular/angular.js"></script>
+<link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.css"/>
+<link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap-theme.css"/>
+<script type="text/javascript">
+  var appInIframe = angular.module('vmiToolApp', []);
+
+  appInIframe.factory('$parentScope', function($window) {
+    return $window.parent.angular.element($window.frameElement).scope();
+  });
+
+  appInIframe.controller('ChildController', function($scope, $parentScope, $window) {
+    $scope.messages = [];
+    $scope.showScript = 0;
+    $scope.scriptModified = false;
+    $scope.message = function(msg) {
+      var blocklyscript = {};
+      // $parentScope.$emit('from-blockly', blocklyscript);
+      // var blocklyJS = $window.Blockly.JavaScript.workspaceToCode($window.workspace);
+      // var uglyxML = $window.Blockly.Xml.workspaceToDom($window.workspace);
+      // var blocklyXML = $window.Blockly.Xml.domToPrettyText(uglyxML);
+      // blocklyscript.js = blocklyJS;
+      // blocklyscript.xml = blocklyXML;
+      $parentScope.$emit('from-vmiTool', blocklyscript);
+      $scope.scriptModified = false;
+      $parentScope.$apply();
+    };
+    $parentScope.$on('from-parent', function(e, message) {
+      $scope.tableList = message.tabList;
+      $scope.convertedXML = message.xml;
+    });
+    $scope.getParentMessage = function() {
+      var curScr = $parentScope.loadXML();
+    };
+    
+  });
+
+</script>
+</head>
+<body ng-controller="ChildController" ng-init="getParentMessage()">
+  <div class="well well-sm">
+    <span>Central Appendix XML</span>
+    <div data-ng-show="convertedXML != ''">
+      <textarea class="form-control" rows="10" id="xmlarea" ng-model="convertedXML"></textarea>
+    </div>
+  </div>
+  <form action="http://lorry.cc.telcordia.com:9595/vmitool/Convert" method="post" target="_blank" enctype="multipart/form-data">
+  <!-- <form action="http://localhost:8080/vmitool/Convert" method="post" target="_blank" enctype="multipart/form-data"> -->
+        <input type="hidden" name="command" value="CONVERT">
+        <input type="hidden" name="file" value="{{convertedXML}}">
+        <!-- <input id="fileUploader" name="filepart" type="file" style="margin: 5px;"></input><br> -->
+        <fieldset>
+        <legend class="medium">Select Ref Data</legend>
+        <input type="radio" name="xformType" value="all-tables"><strong>All Tables</strong><br>
+        <div ng-repeat="tabl in tableList" class="vrepeat-animation">
+          <input type="radio" name="xformType" value="table-{{tabl.number}}"><strong>{{tabl.number}} - {{tabl.name}}</strong><br>
+        </div>
+        <input type="radio" name="xformType" value="ngdm-extract"><strong>NG-DM Extract</strong><br>
+        </fieldset>
+        <div class="well well-sm">
+          <fieldset>
+          <legend>Select Output Type</legend>
+          <input type="radio" name="outputType" value="serialize-xml"><strong>XML</strong>
+          <input type="radio" name="outputType" value="serialize-html"><strong>HTML</strong>
+          <input type="radio" name="outputType" value="serialize-excel"><strong>Excel (xlsx)</strong>
+          <input type="radio" name="outputType" value="serialize-pdf"><strong>PDF</strong>
+          </fieldset>
+          <button class="btn btn-primary" id="submitFileButton" type="submit" style="padding: 5px; margin: 5px;">Transform</button>
+        </div>        
+  </form>
+
+  <script>
+    var fileXML='';
+
+    
+  </script>
+  <!-- <button class="btn btn-warning" ng-click="getParentMessage()">Get Script</button> -->
+  
+
+</body>
+</html>

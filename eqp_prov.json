@@ -1,0 +1,32 @@
+{
+	"rowIndex": 1,
+	"issue": "1.0",
+	"deviceCode": "OSMPDRLNE",
+	"deviceId-UnitMapping": [
+		{"segment":1, "values":["20"]},
+		{"segment":2, "values":["1-7","10-16"]},
+		{"segment":3, "values":["1-20"]}
+	],
+	"range": "N/A",
+	"unitID-frameData": {"unit":"xxyyzz", "shelf":"xx", "slot":"yy", "port":"zz"},
+	"protectDevId": "",
+	"parentDevId": "",
+	"actions": [
+		{"action":"Add", "commands":["Transmit", "Undo", "Verify Transmit", "Verify"]},
+		{"action":"Delete", "commands":["Transmit", "Undo", "Verify Transmit", "Verify"]},
+		{"action":"Rearrange", "commands":["Transmit", "Undo", "Verify Transmit", "Verify"]}
+	],
+	"tl1AID": [{"tl1":1, 
+				"aid":[{"segment":1, "values":["OSM2S","OSM2C"]},
+						{"segment":2, "values":["20"]},
+						{"segment":3, "values":["1-7","10-16"]}]
+				},
+				{"tl1":2, 
+				"aid":[{"segment":1, "values":["OCH-P"]},
+						{"segment":2, "values":["20"]},
+						{"segment":3, "values":["1-7","10-16"]},
+						{"segment":4, "values":["1-20"]}]
+				}
+		
+	]
+}

@@ -1,0 +1,144 @@
+<section data-ng-controller="GafxmlsController">
+    <!-- <div class="page-header">
+        <h1>New Central Appendix Document</h1>
+    </div> -->
+    <h4>New Central Appendix Document</h4><p/>
+    <div class="col-md-12">
+        <div class="well well-sm">
+            <p><span class="label label-primary">
+            <a class="btn btn-primary" data-ng-click="generateXML()" toggle-data="toggle" title="Show XML">
+               <i class="glyphicon glyphicon-sunglasses"></i>
+            </a></span>
+            <span class="label label-primary" data-ng-show="convertedXML != ''">
+            <a class="btn btn-primary" data-ng-click="convertedXML = ''" toggle-data="toggle" title="Hide XML">
+                <i class="glyphicon glyphicon-object-align-bottom"></i>
+            </a></span>
+            <a class="pull-right btn btn-success" data-ng-click="create();" toggle-data="toggle" title="Save">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>
+            </a>
+            </p>
+            <div data-ng-show="convertedXML != ''" class="field-show-hide"><textarea class="form-control" rows="10" id="xmlarea" ng-model="convertedXML"></textarea></div>
+        </div>
+        <div class="alert alert-warning text-center" data-ng-show="scriptChanged">
+            <strong>Please save the document...Changes have been made to the script...</strong>
+        </div>
+        <!-- <form class="form-horizontal" data-ng-submit="create()" novalidate>
+            <fieldset> -->
+                <!-- <div class="form-group">
+                    <label class="control-label" for="name">Name</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                    </div>
+                </div> -->
+                <!-- <div class="form-group"> -->
+                    <table>
+                        <thead><th>Vendor</th><th>Model</th><th>Issue</th><th>
+                            Version</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="controls">
+                                    <input type="text" data-ng-model="gafxml.vendor" id="gafxml.vendor" class="form-control" placeholder="Vendor" required>
+                                </div></td>
+                                <td><div class="controls">
+                                    <input type="text" data-ng-model="gafxml.model" id="gafxml.model" class="form-control" placeholder="Model" required>
+                                </div></td>
+                                <td><div class="controls">
+                                    <input type="text" data-ng-model="gafxml.issue" id="gafxml.issue" class="form-control" placeholder="Issue" required>
+                                </div></td>
+                                <td><div class="controls">
+                                    <input type="text" data-ng-model="gafxml.version" id="gafxml.version" class="form-control" placeholder="Version" required>
+                                </div></td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                    <table width="100%">
+                        <tr>
+                            <td align="left">
+                                <div class="panel panel-primary pull-left" resizable r-directions="['right']" r-flex="false" r-width="360">
+                                        <div class="panel-heading"><strong>Vendor</strong>:{{gafxml.vendor}} <strong>Model</strong>:{{gafxml.model}} <strong>Issue</strong>:{{gafxml.issue}} <strong>Version</strong>:{{gafxml.version}}</strong></div>
+                                              <div class="panel-body" style="min-height: 550px; max-height: 550px; overflow-y: scroll;">
+                                                <div ng-repeat="tabl in gafxmlTables" class="vrepeat-animation">
+                                                   <button popover="{{tabl.$.displayName}}" popover-trigger="mouseenter" ng-click="openLoader('sm', tabl)" type="button" class="btn btn-xs btn-primary">{{tabl.$.number}} - {{tabl.$.displayName}}</button><p/>
+                                                </div>
+                                              </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="panel panel-primary pull-right" resizable r-directions="['right']" r-flex="false" r-width="1400">
+                                        <div class="panel-heading"><strong>{{currentTable.$.number}} - {{currentTable.$.displayName}}</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <mark><strong><a href="#" e-rows="7" e-cols="40" editable-textarea="currentTable.$.description" e-required e-placeholder="{{currentTable.$.displayName}}">{{ 'Table Description' }}</a></strong></mark>
+                                            <input type="text" class="pull-right" size="35" ng-model="searchText" style="color:black"><span class="label label-primary pull-right">Search</span>
+                                        </div>
+                                              <div class="panel-body" style="min-height: 600px; max-height: 600px; overflow-y: hidden; overflow-x: scroll;">
+                                                <p>
+                                                    <gafxml-table ng-init="readWrite='edit'" editMode="edit"/>
+                                                </p>
+                                              </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                <!-- </div> -->
+                <!-- <div class="form-group">
+                    <input type="submit" class="btn btn-sm btn-primary">
+                </div> -->
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+           <!--  </fieldset>
+        </form> -->
+    </div>
+
+    <script type="text/ng-template" id="blocklyEditor.html">
+        <div class="modal-header">
+            <strong>Blockly Editor</strong>
+        </div>
+        <div class="modal-body">
+            <iframe frameborder="0" width="1500" height="655" ng-src="../modules/gafxmls/blockly-test-orig.html"></iframe>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning btn-sm" ng-click="cancelDelete()">Close Editor</button>
+            <button class="btn btn-success btn-sm" ng-click="saveAndClose()">Save and Close Editor</button>
+        </div>
+    </script>
+
+
+    <script type="text/ng-template" id="loader.html">
+        <div class="modal-header bg-primary">
+            <strong>Please wait Loading records....<i class="fa fa-spinner fa-spin fa-2x pull-center"></i></strong>
+        </div>
+        <!--<div class="modal-body">
+            <mark>
+                <i class="fa fa-spinner fa-spin fa-2x pull-center"></i>
+            </mark>
+        </div>-->
+    </script>
+
+
+    <script type="text/ng-template" id="vmiTool.html">
+        <div class="modal-header">
+            <strong>VMI Tool</strong>
+        </div>
+        <div class="modal-body">
+            <iframe frameborder="0" width="1280" height="650" ng-src="../modules/gafxmls/vmiTool.html"></iframe>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning btn-sm" ng-click="cancelDelete()">Close VMI Tool</button>
+        </div>
+    </script>
+
+
+    <script type="text/ng-template" id="saveAck.html">
+        <div class="modal-header">
+            <strong>Save Status</strong>
+        </div>
+        <div class="modal-body">
+            <bold>Document has been saved successfully!</bold>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning btn-sm" ng-click="cancelDelete()">OK</button>
+        </div>
+    </script>
+</section>

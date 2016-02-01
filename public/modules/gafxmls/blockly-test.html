@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html ng-app="blockly-iframe" id="ng-app">
+<head>
+<meta charset="utf-8">
+<title>Blockly Demo: Fixed Blockly</title>
+<script>document.write('<base href="' + document.location + '" />');</script>
+<script src="../../lib/google-blockly/blockly_compressed.js"></script>
+<script src="../../lib/google-blockly/javascript_compressed.js"></script>
+<script src="../../lib/google-blockly/blocks_compressed.js"></script>
+<script src="../../lib/google-blockly/msg/js/en.js"></script>
+<script src="../../lib/angular/angular.js"></script>
+<link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.css"/>
+<link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap-theme.css"/>
+<script type="text/javascript">
+  var appInIframe = angular.module('blockly-iframe', []);
+
+  appInIframe.factory('$parentScope', function($window) {
+    return $window.parent.angular.element($window.frameElement).scope();
+  });
+
+  appInIframe.controller('ChildController', function($scope, $parentScope, $window) {
+    $scope.messages = [];
+    $scope.showScript = 0;
+    $scope.scriptModified = false;
+    $scope.blockContent = $window.Blockly.JavaScript.workspaceToCode($window.workspace);
+    $scope.message = function(msg) {
+      var blocklyscript = {};
+      // $parentScope.$emit('from-blockly', blocklyscript);
+      var blocklyJS = $window.Blockly.JavaScript.workspaceToCode($window.workspace);
+      var uglyxML = $window.Blockly.Xml.workspaceToDom($window.workspace);
+      var blocklyXML = $window.Blockly.Xml.domToPrettyText(uglyxML);
+      blocklyscript.js = blocklyJS;
+      blocklyscript.xml = blocklyXML;
+      $parentScope.$emit('from-blockly', blocklyscript);
+      $scope.scriptModified = false;
+      // $parentScope.$apply();
+      if ($parentScope.$root.$$phase != '$apply' && $parentScope.$root.$$phase != '$digest') {
+          $parentScope.$apply();
+      }
+    };
+    $parentScope.$on('from-parent', function(e, message) {
+      $scope.messages.push(message);
+      // $scope.$apply(function(){
+        // $window.workspace.updateToolbox(message);
+        var scriptInfo = message;
+        $scope.blockEditable = scriptInfo.blockEditable;
+        $window.varList = scriptInfo.vars;
+        $window.tagList = scriptInfo.tags;
+        $window.tagParmList = scriptInfo.tagParm;
+        $window.posParmList = scriptInfo.posParm;
+        if (scriptInfo.tags.length>0){
+          for (t=0;t<scriptInfo.tags.length;t++){
+            reservedList.push(scriptInfo.tags[t]);
+          }
+        }
+
+        $scope.blocklyTitle = scriptInfo.dlgTitle;
+        if (scriptInfo.scripts.xml !== null && scriptInfo.scripts.xml !==undefined){
+
+          var xml = $window.Blockly.Xml.textToDom(scriptInfo.scripts.xml);
+          $window.Blockly.Xml.domToWorkspace($window.workspace, xml);
+
+        }
+      // });
+
+    });
+
+    $scope.saveScript = function(){
+      var blocklyscript = {};
+      // $parentScope.$emit('from-blockly', blocklyscript);
+      var blocklyJS = $window.Blockly.JavaScript.workspaceToCode($window.workspace);
+      var uglyxML = $window.Blockly.Xml.workspaceToDom($window.workspace);
+      var blocklyXML = $window.Blockly.Xml.domToPrettyText(uglyxML);
+      blocklyscript.js = blocklyJS;
+      blocklyscript.xml = blocklyXML;
+      return blocklyscript;
+    }
+
+
+    $parentScope.$on('from-parent-save', function(e, message) {
+      $scope.message('save me');
+      var bScript = $scope.saveScript();
+      $parentScope.$emit('close-blockly', bScript);
+      // $parentScope.$apply();
+    });
+    $scope.getParentMessage = function() {
+      var curScr = $parentScope.loadBlockly();
+    };
+
+    $scope.change = function() {
+        $scope.scriptModified=true;
+    };
+
+  });
+
+</script>
+</head>
+<body ng-controller="ChildController" ng-init="getParentMessage()" oncontextmenu="var cmenutext='text';return false;">
+  <span>{{blocklyTitle}}</span>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <div id="blocklyDiv" style="height: 560px; width: 1250px;"></div>
+          Show Code:<input type="checkbox" ng-model="checked" aria-label="Toggle ngHide"><br/>
+          <div class="alert alert-warning text-center text-xs" data-ng-hide="!scriptModified">
+            Script Saved
+          </div>
+          <div>
+            <button class="btn btn-danger btn-sm" data-ng-show="blockEditable" ng-click="scriptModified = true;message('yo!!!');">Save Script</button>
+          </div>
+        </td>
+        <td ng-show="checked" class="ng-hide">
+          <div id="blocklyXML" style="height: 560px; width: 450px;">
+            <textarea readonly id="textarea" rows="50" cols="200" ng-model="blockContent" ng-change="change()"></textarea>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <xml id="toolbox" style="display: none">
+    <category name="Transport">
+      <category name="Cmds Parms and Vars">
+        <block type="transport_parameters"></block>
+        <block type="transport_reserved"></block>
+        <block type="transport_ftreserved"></block>
+        <block type="ngdm_sleep"></block>
+        <block type="ngdm_send"></block>
+        <block type="ngdm_optional"></block>
+        <block type="ngdm_fieldholder"></block>
+        <block type="ngdm_resp"></block>
+        <block type="ngdm_tagval"></block>
+        <block type="ngdm_fixed"></block>
+        <block type="ngdm_val"></block>
+        <block type="ngdm_contains"></block>
+        <block type="ngdm_imply"></block>
+        <block type="ngdm_exit"></block>
+        <block type="ngdm_exists"></block>
+        <block type="ngdm_ftexists"></block>
+        <block type="ngdm_list"></block>
+      </category>
+      <category name="String operations">
+        <block type="text"></block>
+        <block type="text_join"></block>
+        <block type="text_append">
+          <value name="TEXT">
+            <block type="text"></block>
+          </value>
+        </block>
+        <block type="text_length"></block>
+        <block type="text_isEmpty"></block>
+        <block type="text_indexOf">
+          <value name="VALUE">
+            <block type="variables_get">
+              <field name="VAR" class="textVar">...</field>
+            </block>
+          </value>
+        </block>
+        <block type="text_charAt">
+          <value name="VALUE">
+            <block type="variables_get">
+              <field name="VAR" class="textVar">...</field>
+            </block>
+          </value>
+        </block>
+        <block type="text_getSubstring">
+          <value name="STRING">
+            <block type="variables_get">
+              <field name="VAR" class="textVar">...</field>
+            </block>
+          </value>
+        </block>
+        <block type="text_changeCase"></block>
+        <block type="text_trim"></block>
+        <block type="text_print"></block>
+        <block type="text_prompt_ext">
+          <value name="TEXT">
+            <block type="text"></block>
+          </value>
+        </block>
+      </category>
+      <category name="Script Variables" custom="VARIABLE"></category>
+      <category name="If">
+        <block type="controls_if"></block>
+        <block type="controls_if">
+          <mutation else="1"></mutation>
+        </block>
+        <block type="controls_if">
+          <mutation elseif="1" else="1"></mutation>
+        </block>
+        <block type="text"></block>
+        <block type="text_print"></block>
+        <block type="math_number"></block>
+      </category>
+      <category name="Boolean">
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean"></block>
+        <block type="logic_null"></block>
+        <block type="logic_ternary"></block>
+      </category>
+      <category name="Loops">
+        <block type="controls_repeat_ext">
+          <value name="TIMES">
+            <block type="math_number">
+              <field name="NUM">10</field>
+            </block>
+          </value>
+        </block>
+        <block type="controls_whileUntil"></block>
+        <block type="controls_for">
+          <field name="VAR">i</field>
+          <value name="FROM">
+            <block type="math_number">
+              <field name="NUM">1</field>
+            </block>
+          </value>
+          <value name="TO">
+            <block type="math_number">
+              <field name="NUM">10</field>
+            </block>
+          </value>
+          <value name="BY">
+            <block type="math_number">
+              <field name="NUM">1</field>
+            </block>
+          </value>
+        </block>
+        <block type="controls_forEach"></block>
+        <block type="controls_flow_statements"></block>
+      </category>
+    </category>
+  </xml>
+
+  <script>
+    // var varList = [["eqp_state", "eqp_state"], ["ALMPF", "ALMPF"], ["EXTCHAN", "EXTCHAN"], ["FECTYPE", "FECTYPE"]];
+    var varList=[], tagList=[];
+    var tagParmList=[], posParmList=[];
+    var blocklyTitle = "Parms for Vars"
+    var reservedList=[["cmd","cmd"],["response","response"],["devid","devid"],["devcd","devcd"],["fcn","fcn"],["clei","clei"],["range","range"],["asgn_to_devcd","asgn_to_devcd"],["asgn_to_devid","asgn_to_devid"],["location","location"],["circuit_id","circuit_id"],["sec","sec"],["cac","cac"],["order_id","order_id"],["clo","clo"],["service_type","service_type"],["siglvl","siglvl"],["svctype","svctype"],["range","range"],["leg_ind","leg_ind"],["service_type","service_type"],["egressaid","egressaid"],["egressAid","egressAid"]];
+    var ftReservedList=[["eunit","eunit"],["protocol","protocol"],["type","type"],["cdc","cdc"],["genfcn789","genfcn789"],["high_osm","high_osm"],["virt","virt"],["odu_portid","odu_portid"],["odu_ntwktrib1","odu_ntwktrib1"],["port_ntwktrib1","port_ntwktrib1"],["prot_eunit","prot_eunit"],["ycable","ycable"],["edevcd","edevcd"],["siglvl","siglvl"],["dp","dp"],["prot_odu_portid","prot_odu_portid"],["prot_flx_portid","prot_flx_portid"],["hybdrop","hybdrop"],["other_side_dp","other_side_dp"]];
+    var workspace = Blockly.inject('blocklyDiv',
+        {toolbox: document.getElementById('toolbox')});
+
+    Blockly.Blocks['transport_send'] = {
+      init: function() {
+        this.setHelpUrl('http://www.example.com/');
+        this.setColour(20);
+        this.appendValueInput("COMMAND")
+            .setCheck("String")
+            .appendField("send")
+            .appendField(new Blockly.FieldDropdown([["tl1", "TL1"], ["cmise", "CMISE"], ["snmp", "SNMP"], ["pds", "PDS"]]), "PROTOCOL");
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        // this.setOutput(true);
+        this.setTooltip('');
+        // this.setEditable(false);
+      }
+    };
+
+    Blockly.Blocks['transport_variables'] = {
+      init: function() {
+        this.setColour(210);
+        if (varList.length === 0){
+          varList=[["", ""]];
+        }
+        this.appendValueInput("parm")
+            .appendField("if")
+            // .appendField(new Blockly.FieldDropdown([["eqp_state", "eqp_state"], ["ALMPF", "ALMPF"], ["EXTCHAN", "EXTCHAN"], ["FECTYPE", "FECTYPE"]]), "SENSOR")
+            .appendField(new Blockly.FieldDropdown(varList), "SENSOR")
+            .appendField(" ")
+            .appendField(new Blockly.FieldDropdown([["=", "="], ["?", "?"], ["<", "<"], ["?", "?"], [">", ">"], ["?", "?"]]), "OPERATOR")
+            .appendField(" ")
+            .appendField(new Blockly.FieldTextInput("0"), "SENSORVALUE");
+        this.appendStatementInput("DO")
+            .appendField("do");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('');
+        // this.setEditable(false);
+      }
+    };
+
+    Blockly.JavaScript['transport_variables'] = function(block) {
+      var value_parm = Blockly.JavaScript.valueToCode(block, 'parm', Blockly.JavaScript.ORDER_ATOMIC);
+      var operator = block.getFieldValue('OPERATOR');
+      var sensor = block.getFieldValue('SENSOR');
+      var sensorVal = block.getFieldValue('SENSORVALUE');
+      var statements_stmt = Blockly.JavaScript.statementToCode(block, 'DO');
+      // TODO: Assemble JavaScript into code variable.
+      var code = '\n\nif (' + sensor + operator + sensorVal + ')\n';
+      code += '{\n\n' + statements_stmt + '}\n\n';
+      // TODO: Change ORDER_NONE to the correct strength.
+      // return [code, Blockly.JavaScript.ORDER_NONE];
+      return code;
+    };
+
+    Blockly.Blocks['transport_parameters'] = {
+              init: function() {
+                if (varList.length === 0){
+                  varList=[["", ""]];
+                }
+                this.appendDummyInput()
+                    .appendField(new Blockly.FieldDropdown(varList), "parm_list")
+                this.setOutput(true, "String");
+                this.setColour(330);
+                this.setTooltip('Quickly add "TAG=value" to a command');
+                this.setHelpUrl('http://www.example.com/');
+                // this.setEditable(false);
+              }
+    };
+
+    Blockly.Blocks['transport_reserved'] = {
+              init: function() {
+                this.appendDummyInput()
+                    .appendField(new Blockly.FieldDropdown(reservedList), "reserved_list")
+                this.setOutput(true, "String");
+                this.setColour(330);
+                this.setTooltip('Quickly add "TAG=value" to a command');
+                this.setHelpUrl('http://www.example.com/');
+                // this.setEditable(false);
+              }
+    };
+
+    Blockly.Blocks['transport_ftreserved'] = {
+              init: function() {
+                this.appendDummyInput()
+                    .appendField(new Blockly.FieldDropdown(ftReservedList), "ftReserved_list")
+                this.setOutput(true, "String");
+                this.setColour(440);
+                this.setTooltip('Flowthrough Quickly add "TAG=value" to a command');
+                this.setHelpUrl('http://www.example.com/');
+                // this.setEditable(false);
+              }
+    };
+
+    Blockly.Blocks['ngdm_sleep'] = {
+                init: function() {
+                  this.setHelpUrl('http://www.example.com/');
+                  this.setColour(120);
+                  this.appendValueInput("SECONDS").appendField("sleep").setCheck("Number");
+                  this.appendDummyInput().appendField("seconds");
+                  this.setPreviousStatement(true);
+                  this.setNextStatement(true);
+                  this.setInputsInline(true);
+                  this.setTooltip('Wait some number of seconds');
+                  // this.setEditable(false);
+                }
+              };
+
+    Blockly.Blocks['ngdm_send'] = {
+                init: function() {
+                  this.setHelpUrl('http://www.example.com/');
+                  this.setColour(10);
+                  this.setInputsInline(true);
+                  this.setPreviousStatement(true);
+                  this.setNextStatement(true, "Response");
+                  this.appendValueInput("CMD1")
+                      .appendField("send");
+                  this.setTooltip('Send a command to the NE');
+                  this.children_ = 1;
+                  // this.setEditable(false);
+                },
+
+              mutationToDom: function() {
+                     var container = document.createElement('mutation');
+                     container.setAttribute('children', this.children_);
+                     return container;
+              },
+
+              domToMutation: function(xmlElement) {
+                     var c = xmlElement.getAttribute('children');
+                     this.updateShape_(c);
+              },
+
+              onchange: function() {
+                     var v = this.getInputTargetBlock('CMD' + this.children_);
+                     if (v != null) {
+                            this.updateShape_(this.children_ + 1);
+                      }else if (this.children_ > 1 && this.getInputTargetBlock('CMD' + (this.children_-1)) == null){
+                        this.updateShape_(this.children_ - 1);
+                      }
+              },
+
+              updateShape_: function(c) {
+                     if (c < 1) c = 1;
+                     while (c > this.children_) {
+                           ++this.children_;
+                           var inputExists = this.getInput('CMD' + this.children_);
+                           if (!inputExists)
+                                  this.appendValueInput('CMD' + this.children_);
+                     }
+                     while (c < this.children_) {
+                           var inputExists = this.getInput('CMD' + this.children_);
+                           if (inputExists)
+                                  this.removeInput('CMD' + this.children_);
+                           --this.children_;
+                     }
+              }
+              };
+
+
+    Blockly.Blocks['ngdm_optional'] = {
+                init: function() {
+                  this.setHelpUrl('http://www.example.com/');
+                  this.setColour(55);
+                  this.appendValueInput("OPT1")
+                      .appendField("optional");
+                  this.setInputsInline(true);
+                  this.setTooltip('Optional section within a command');
+                  this.setOutput(true);
+                  this.children_ = 1;
+                  // this.setEditable(false);
+                },
+
+                mutationToDom: function() {
+                           var container = document.createElement('mutation');
+                           container.setAttribute('children', this.children_);
+                           return container;
+                     },
+
+                 domToMutation: function(xmlElement) {
+                       var c = xmlElement.getAttribute('children');
+                       this.updateShape_(c);
+                 },
+
+                 onchange: function() {
+                       var v = this.getInputTargetBlock('OPT' + this.children_);
+                      if (v != null) {
+                        this.updateShape_(this.children_ + 1);
+                      }else if (this.children_ > 1 && this.getInputTargetBlock('OPT' + (this.children_-1)) == null){
+                        this.updateShape_(this.children_ - 1);
+                      }
+
+                 },
+
+                 updateShape_: function(c) {
+                       if (c < 1) c = 1;
+                       while (c > this.children_) {
+                              ++this.children_;
+                              var inputExists = this.getInput('OPT' + this.children_);
+                              if (!inputExists)
+                                     this.appendValueInput('OPT' + this.children_);
+                       }
+                       while (c < this.children_) {
+                              var inputExists = this.getInput('OPT' + this.children_);
+                              if (inputExists)
+                                     this.removeInput('OPT' + this.children_);
+                              --this.children_;
+                       }
+                 }
+
+              };
+
+
+    Blockly.Blocks['ngdm_fieldholder'] = {
+                init: function() {
+                  this.setHelpUrl('http://www.example.com/');
+                  this.setColour(85);
+                  this.appendValueInput("FLD1");
+                  this.setInputsInline(true);
+                  this.setTooltip('Field holder for fields/variables');
+                  this.setOutput(true);
+                  this.children_ = 1;
+                  // this.setEditable(false);
+                },
+
+                mutationToDom: function() {
+                           var container = document.createElement('mutation');
+                           container.setAttribute('children', this.children_);
+                           return container;
+                     },
+
+                 domToMutation: function(xmlElement) {
+                       var c = xmlElement.getAttribute('children');
+                       this.updateShape_(c);
+                 },
+
+                 onchange: function() {
+                       var v = this.getInputTargetBlock('FLD' + this.children_);
+                      if (v != null) {
+                        this.updateShape_(this.children_ + 1);
+                      }else if (this.children_ > 1 && this.getInputTargetBlock('FLD' + (this.children_-1)) == null){
+                        this.updateShape_(this.children_ - 1);
+                      }
+
+                 },
+
+                 updateShape_: function(c) {
+                       if (c < 1) c = 1;
+                       while (c > this.children_) {
+                              ++this.children_;
+                              var inputExists = this.getInput('FLD' + this.children_);
+                              if (!inputExists)
+                                     this.appendValueInput('FLD' + this.children_);
+                       }
+                       while (c < this.children_) {
+                              var inputExists = this.getInput('FLD' + this.children_);
+                              if (inputExists)
+                                     this.removeInput('FLD' + this.children_);
+                              --this.children_;
+                       }
+                 }
+
+              };
+
+    // Bloc
+
+    Blockly.Blocks['ngdm_resp'] = {
+                init: function() {
+                  this.setHelpUrl('http://www.example.com/');
+                  this.setColour(10);
+                  this.appendDummyInput()
+                      .appendField("valid response")
+                      .appendField(new Blockly.FieldTextInput("COMPLD"), "RESP");
+                  this.setPreviousStatement(true, "Response");
+                  this.setNextStatement(true, "Response");
+                  this.setTooltip('Check NE response');
+                  // this.setEditable(false);
+                }
+              };
+
+    Blockly.Blocks['ngdm_val'] = {
+                init: function() {
+                  this.appendValueInput("NAME")
+                      .setCheck("Boolean")
+                      .appendField("validation");
+                  this.appendDummyInput()
+                      .appendField("message")
+                      .appendField(new Blockly.FieldTextInput(""), "MESSAGE");
+                  this.setInputsInline(false);
+                  this.setPreviousStatement(true);
+                  this.setNextStatement(true);
+                  this.setColour(120);
+                  this.setTooltip('');
+                  this.setHelpUrl('http://www.example.com/');
+                  // this.setEditable(false);
+                }
+              };
+
+    Blockly.Blocks['ngdm_imply'] = {
+                init: function() {
+                  this.appendValueInput("LEFT")
+                      .setCheck("Boolean");
+                  this.appendValueInput("RIGHT")
+                      .setCheck("Boolean")
+                      .appendField(new Blockly.FieldDropdown([["implies", "=>"], ["if and only if", "<=>"]]), "DIR");
+                  this.setInputsInline(true);
+                  this.setOutput(true, "Boolean");
+                  this.setColour(210);
+                  this.setTooltip('');
+                  this.setHelpUrl('http://www.example.com/');
+                  // this.setEditable(false);
+                }
+              };
+
+    Blockly.Blocks['ngdm_contains'] = {
+                init: function() {
+                  this.appendValueInput("SOURCE");
+                  this.appendValueInput("REGEX")
+                      .setCheck("String")
+                      .appendField(new Blockly.FieldDropdown([["contains", "~"], ["does not contain", "!~"]]), "CONTAINS");
+                  this.setInputsInline(true);
+                  this.setOutput(true, "Boolean");
+                  this.setColour(210);
+                  this.setTooltip('');
+                  this.setHelpUrl('http://www.example.com/');
+                  // this.setEditable(false);
+                }
+              };
+
+
+    Blockly.Blocks['ngdm_exit'] = {
+                init: function() {
+                  this.appendDummyInput()
+                      .appendField("exit with")
+                      .appendField(new Blockly.FieldDropdown([["failure", "FAIL"], ["completed", "PASS"]]), "STATUS")
+                      .appendField("status");
+                  this.appendDummyInput()
+                      .appendField("message")
+                      .appendField(new Blockly.FieldTextInput(""), "MESSAGE");
+                  this.setInputsInline(false);
+                  this.setPreviousStatement(true);
+                  this.setNextStatement(true);
+                  this.setColour(0);
+                  this.setTooltip('');
+                  this.setHelpUrl('http://www.example.com/');
+                  // this.setEditable(false);
+                }
+              };
+
+    Blockly.Blocks['ngdm_exists'] = {
+                init: function() {
+                  if (varList.length === 0){
+                    varList=[["", ""]];
+                  }
+                  this.appendDummyInput()
+                     // include dynamic list of applicable parameters
+                      .appendField(new Blockly.FieldDropdown(varList), "NAME")
+                      .appendField(new Blockly.FieldDropdown([["exists", "true"], ["does not exist", "false"]]), "EXISTS");
+                  this.setInputsInline(true);
+                  this.setOutput(true, "Boolean");
+                  this.setColour(150);
+                  this.setTooltip('');
+                  this.setHelpUrl('http://www.example.com/');
+                  // this.setEditable(false);
+                }
+              };
+
+    Blockly.Blocks['ngdm_ftexists'] = {
+                init: function() {
+                  if (varList.length === 0){
+                    varList=[["", ""]];
+                  }
+                  this.appendDummyInput()
+                     // include dynamic list of applicable parameters
+                      .appendField("FT")
+                      .appendField(new Blockly.FieldDropdown(ftReservedList), "NAME")
+                      .appendField(new Blockly.FieldDropdown([["exists", "true"], ["does not exist", "false"]]), "EXISTS");
+                  this.setInputsInline(true);
+                  this.setOutput(true, "Boolean");
+                  this.setColour(440);
+                  this.setTooltip('For FT Parameters');
+                  this.setHelpUrl('http://www.example.com/');
+                  // this.setEditable(false);
+                }
+              };
+
+
+
+
+    Blockly.Blocks['ngdm_tagval'] = {
+              init: function() {
+                if (tagParmList.length === 0){
+                  tagParmList=[["", ""]];
+                }
+                this.appendDummyInput()
+                    .appendField("TAG=")
+                    .appendField(new Blockly.FieldDropdown(tagParmList), "TAGVAL")
+                    .appendField("Opt")
+                    .appendField(new Blockly.FieldCheckbox("TRUE"), "OPTIONAL");
+                this.setOutput(true, "String");
+                this.setColour(260);
+                this.setTooltip('Quickly add "TAG=value" to a command');
+                this.setHelpUrl('http://www.example.com/');
+                // this.setEditable(false);
+              }
+    };
+
+    Blockly.Blocks['ngdm_fixed'] = {
+              init: function() {
+                if (posParmList.length === 0){
+                  posParmList=[["", ""]];
+                }
+                this.appendDummyInput()
+                    .appendField(new Blockly.FieldDropdown(posParmList), "TAGVAL")
+                    .appendField("Opt")
+                    .appendField(new Blockly.FieldCheckbox("TRUE"), "OPTIONAL");
+                this.setOutput(true, "String");
+                this.setColour(260);
+                this.setTooltip('Quickly add "TAG=value" to a command');
+                this.setHelpUrl('http://www.example.com/');
+                // this.setEditable(false);
+              }
+    };
+
+    Blockly.Blocks['ngdm_list'] = {
+      init: function() {
+        this.appendValueInput("N1")
+            .appendField(new Blockly.FieldDropdown([["comma", ","], ["dash", "-"], ["semicolon", ";"]]), "DELIM")
+            .appendField("list");
+        this.appendValueInput("N2");
+        this.setInputsInline(false);
+        this.setOutput(true, "String");
+        this.setColour(20);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+        this.items_ = 2;
+      },
+
+      mutationToDom: function() {
+        var container = document.createElement('mutation');
+        container.setAttribute('items', this.items_);
+        return container;
+      },
+
+      domToMutation: function(xmlElement) {
+        this.update_(xmlElement.getAttribute('items'));
+      },
+
+      onchange: function() {
+        if (this.getInputTargetBlock('N' + this.items_) != null)
+          this.update_(this.items_ + 1);
+        else if (this.items_ > 2 && this.getInputTargetBlock('N' + (this.items_-1)) == null)
+          this.update_(this.items_ - 1);
+      },
+
+      update_: function(c) {
+        if (c == null || c < 2) c = 2;
+        while (c > this.items_) {
+          ++this.items_;
+          var inputExists = this.getInput('N' + this.items_);
+          if (!inputExists)
+            this.appendValueInput('N' + this.items_);
+        }
+        while (c < this.items_) {
+          var inputExists = this.getInput('N' + this.items_);
+          if (inputExists)
+            this.removeInput('N' + this.items_);
+          --this.items_;
+        }
+      }
+
+    };
+
+
+
+
+    Blockly.JavaScript['ngdm_list'] = function(block) {
+      var code = '';
+
+      try{
+        var value_command = Blockly.JavaScript.valueToCode(block, 'N1', Blockly.JavaScript.ORDER_NONE);
+      var dropdown_protocol = block.getFieldValue('DELIM');
+      // TODO: Assemble JavaScript into code variable.
+      if (value_command==='' && dropdown_protocol===''){
+      code = '';
+      }else{
+      code = value_command + ' ' + dropdown_protocol;
+      }
+
+      }catch(err){
+        console.log('damn error' + err);
+        code = 'test'
+      }
+      return [code, Blockly.JavaScript.ORDER_NONE];
+    };
+
+    Blockly.JavaScript['transport_send'] = function(block) {
+      var value_command = Blockly.JavaScript.valueToCode(block, 'COMMAND', Blockly.JavaScript.ORDER_ATOMIC);
+      var dropdown_protocol = block.getFieldValue('PROTOCOL');
+      // TODO: Assemble JavaScript into code variable.
+      var code = '\n' + dropdown_protocol + '::' + value_command + '\n';
+      return code;
+    };
+
+    Blockly.JavaScript['transport_parameters'] = function(block) {
+      var dropdown_parm_list = block.getFieldValue('parm_list');
+      var code = dropdown_parm_list;
+      return [code, Blockly.JavaScript.ORDER_NONE];
+    };
+
+    Blockly.JavaScript['ngdm_tagval'] = function(block) {
+      var opt = block.getFieldValue('OPTIONAL');
+      var dropdown_tagval = block.getFieldValue('TAGVAL');
+      var code = 'TAG=' + dropdown_tagval + ' (optional=' + opt + ')';
+      return [code, Blockly.JavaScript.ORDER_NONE];
+    };
+
+    Blockly.JavaScript['ngdm_fixed'] = function(block) {
+      var opt = block.getFieldValue('OPTIONAL');
+      var dropdown_tagval = block.getFieldValue('TAGVAL');
+      var code = dropdown_tagval + ' (optional=' + opt + ')';
+      return [code, Blockly.JavaScript.ORDER_NONE];
+    };
+
+    Blockly.JavaScript['transport_reserved'] = function(block) {
+      var dropdown_reserved_list = block.getFieldValue('reserved_list');
+       var code = dropdown_reserved_list;
+      return [code, Blockly.JavaScript.ORDER_NONE];
+    };
+
+    Blockly.JavaScript['transport_ftreserved'] = function(block) {
+      var dropdown_reserved_list = block.getFieldValue('ftReserved_list');
+       var code = dropdown_reserved_list;
+      return [code, Blockly.JavaScript.ORDER_NONE];
+    };
+
+    Blockly.JavaScript['ngdm_sleep'] = function(block) {
+      var value_command = Blockly.JavaScript.valueToCode(block, 'SECONDS', Blockly.JavaScript.ORDER_NONE);
+      var code = 'sleep(' + value_command + ');\n';
+      return code;
+    };
+
+    Blockly.JavaScript['ngdm_send'] = function(block) {
+     var value_parm = '';
+      for (var il=0, ilLength=block.inputList.length; il<ilLength; il++){
+        var ilInd = il + 1;
+        var prefix = '';
+        if (il>0) prefix = ' + ';
+        value_parm += prefix + Blockly.JavaScript.valueToCode(block, 'CMD' + ilInd,Blockly.JavaScript.ORDER_NONE);
+      }
+      var code = 'snd(' + value_parm + ');\n';
+      // TODO: Change ORDER_NONE to the correct strength.
+      return code;
+    };
+
+    Blockly.JavaScript['ngdm_fieldholder'] = function(block) {
+      try{
+          var value_parm = '';
+          // value_parm = Blockly.JavaScript.valueToCode(block, 'OPT1',Blockly.JavaScript.ORDER_ATOMIC);
+        for (var il=0, ilLength=block.inputList.length; il<ilLength; il++){
+          var ilInd = il + 1;
+          try{
+            var prefix = '';
+            if (il>0) prefix = ' + ';
+            value_parm += prefix + Blockly.JavaScript.valueToCode(block, 'FLD' + ilInd,Blockly.JavaScript.ORDER_NONE);
+          }catch(errors){
+            console.log('ngdm-fieldholder---errors::' + errors);
+          }
+
+        }
+
+        // TODO: Assemble JavaScript into code variable.
+        // var code = '...';
+        var code = value_parm;
+        // TODO: Change ORDER_NONE to the correct strength.
+        return [code, Blockly.JavaScript.ORDER_NONE];;
+      }catch(err){console.log('ngdm-fieldholder---errors---err::' + err);}
+      return '';
+    };
+
+    Blockly.JavaScript['ngdm_optional'] = function(block) {
+      try{
+          var value_parm = '';
+          // value_parm = Blockly.JavaScript.valueToCode(block, 'OPT1',Blockly.JavaScript.ORDER_ATOMIC);
+        for (var il=0, ilLength=block.inputList.length; il<ilLength; il++){
+          var ilInd = il + 1;
+          try{
+            var prefix = '';
+            if (il>0) prefix = ' + ';
+            value_parm += prefix + Blockly.JavaScript.valueToCode(block, 'OPT' + ilInd,Blockly.JavaScript.ORDER_NONE);
+          }catch(errors){
+            console.log('ngdm-optional---errors::' + errors);
+          }
+
+        }
+
+        // TODO: Assemble JavaScript into code variable.
+        // var code = '...';
+        var code = value_parm;
+        // TODO: Change ORDER_NONE to the correct strength.
+        return [code, Blockly.JavaScript.ORDER_NONE];;
+      }catch(err){console.log('ngdm-optional---err::' + err);}
+      return '';
+    };
+
+    Blockly.JavaScript['ngdm_resp'] = function(block) {
+      var value_parm = Blockly.JavaScript.valueToCode(block, 'COMPLD',Blockly.JavaScript.ORDER_ATOMIC);
+      // TODO: Assemble JavaScript into code variable.
+      // var code = '...';
+      var code = 'resp=' + value_parm + ';\n';
+      // TODO: Change ORDER_NONE to the correct strength.
+      return code;
+    };
+
+    Blockly.JavaScript['ngdm_val'] = function(block) {
+      var value_parm = Blockly.JavaScript.valueToCode(block, 'MESSAGE',Blockly.JavaScript.ORDER_ATOMIC);
+      // TODO: Assemble JavaScript into code variable.
+      // var code = '...';
+      var code = 'validate(' + value_parm + ');\n';
+      // TODO: Change ORDER_NONE to the correct strength.
+      return code;
+    };
+
+    Blockly.JavaScript['ngdm_contains'] = function(block) {
+      var value_parm = Blockly.JavaScript.valueToCode(block, 'CONTAINS',Blockly.JavaScript.ORDER_ATOMIC);
+      // TODO: Assemble JavaScript into code variable.
+      // var code = '...';
+      var code = 'regex(' + value_parm + ');\n';
+      // TODO: Change ORDER_NONE to the correct strength.
+      return [code, Blockly.JavaScript.ORDER_NONE];
+    };
+
+    Blockly.JavaScript['ngdm_imply'] = function(block) {
+      var value_parm = Blockly.JavaScript.valueToCode(block, 'DIR',Blockly.JavaScript.ORDER_ATOMIC);
+      // TODO: Assemble JavaScript into code variable.
+      // var code = '...';
+      var code = 'implies(' + value_parm + ');\n';
+      // TODO: Change ORDER_NONE to the correct strength.
+      return [code, Blockly.JavaScript.ORDER_NONE];
+    };
+
+    Blockly.JavaScript['ngdm_exit'] = function(block) {
+      var value_parm = Blockly.JavaScript.valueToCode(block, 'STATUS',Blockly.JavaScript.ORDER_ATOMIC);
+      var value_status = Blockly.JavaScript.valueToCode(block, 'status',Blockly.JavaScript.ORDER_ATOMIC);
+      var value_msg = Blockly.JavaScript.valueToCode(block, 'message',Blockly.JavaScript.ORDER_ATOMIC);
+      // TODO: Assemble JavaScript into code variable.
+      // var code = '...';
+      var code = 'exit ' + value_parm + ' - ' + value_status + value_msg + ' \n';
+      // TODO: Change ORDER_NONE to the correct strength.
+      //return [code, Blockly.JavaScript.ORDER_NONE];
+      return code;
+    };
+
+    Blockly.JavaScript['ngdm_exists'] = function(block) {
+      var opt = block.getFieldValue('EXISTS');
+      var dropdown_tagval = block.getFieldValue('NAME');
+      var code = opt + ' exists in (' + dropdown_tagval + ')';
+      return [code, Blockly.JavaScript.ORDER_NONE];
+    };
+
+    Blockly.JavaScript['ngdm_ftexists'] = function(block) {
+      var opt = block.getFieldValue('EXISTS');
+      var dropdown_tagval = block.getFieldValue('NAME');
+      var code = opt + ' exists in (' + dropdown_tagval + ')';
+      return [code, Blockly.JavaScript.ORDER_NONE];
+    };
+
+    function myUpdateFunction() {
+      // var code = Blockly.JavaScript.workspaceToCode(workspace);
+      var uglyxML = Blockly.Xml.workspaceToDom(workspace);
+        var blocklyXML = Blockly.Xml.domToPrettyText(uglyxML);
+      try{
+        var blocklyJS = Blockly.JavaScript.workspaceToCode(workspace);
+      }catch(err){
+        //alert('There was an error adding the block'.err);
+      }
+
+
+      document.getElementById('textarea').value = blocklyJS;
+
+    }
+    workspace.addChangeListener(myUpdateFunction);
+
+    function censor(censor) {
+      var i = 0;
+
+      return function(key, value) {
+        if(i !== 0 && typeof(censor) === 'object' && typeof(value) == 'object' && censor == value)
+          return '[Circular]';
+
+        if(i >= 29) // seems to be a harded maximum of 30 serialized objects?
+          return '[Unknown]';
+
+        ++i; // so we know we aren't using the original object anymore
+
+        return value;
+      }
+    }
+  </script>
+  <!-- <button class="btn btn-warning" ng-click="getParentMessage()">Get Script</button> -->
+
+
+</body>
+</html>

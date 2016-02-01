@@ -1,0 +1,92 @@
+<section data-ng-controller="GafxmlsController" data-ng-init="loadGIF=true;find();loadGIF=false;">
+    <div class="well well-sm col-sm-12">
+        <span class="label label-primary">Vendor</span>
+        <input type="text" size="25" ng-model="searchText.vendor">
+        <span class="label label-primary">Model</span>
+        <input type="text" size="25" ng-model="searchText.model">
+        <span class="label label-primary">Issue</span>
+        <input type="text" size="25" ng-model="searchText.issue">
+        <span class="label label-primary">Version</span>
+        <input type="text" size="15" ng-model="searchText.version">
+    </div>
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+           <div class="panel-heading">
+              <h3 class="panel-title text-center">Central Appendix Documents&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span   class="label label-primary"><a class="btn btn-success" ng-click="initScreenData();" href="/#!/gafxmls/create" toggle-data="toggle" title="Create a new Central Appendix">
+                   <i class="glyphicon glyphicon-plus"></i>
+                </a></span>
+              </h3>
+           </div>
+           <div class="panel-body">
+
+              <div data-ng-show="loadGIF" class="field-show-hide"><img alt="Loading..." class="img-rectangle" src="modules/gafxmls/img/loading.gif" /></div>
+              <table class="table table-striped">
+               <caption>Select a row below to view details</caption>
+               <thead>
+                  <tr>                  
+                     <th></th>
+                     <th>Vendor</th>
+                     <th>Model</th>
+                     <th>Issue</th>
+                     <th>Version</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr data-ng-repeat="gafxml in gafxmls | filter:searchText.vendor | filter:searchText.model | filter:searchText.issue | filter:searchText.version " class="repeat-animation">
+                    <td>
+                      <a data-ng-href="#!/gafxmls/{{gafxml._id}}" class="repeat-animation list-group-item">
+                        <p class="alert alert-info text-center" ng-show="gafxml.freezeDocUser">
+                          <i class="glyphicon glyphicon glyphicon-ice-lolly btn-sm bg-info" toggle-data="toggle" title="Document is frozen. Read only."></i>
+                          Document frozen <span data-ng-bind="gafxml.freezeDoc | date:'medium'"></span> by <span data-ng-bind="gafxml.freezeDocUser.displayName">
+                        </p>
+                        Posted on <span data-ng-bind="gafxml.created | date:'medium'"></span> by <span data-ng-bind="gafxml.user.displayName"></span>
+                        <!-- <span ng-show="gafxml.updated">| Updated on <span data-ng-bind="gafxml.updated | date:'medium'"></span> by <span data-ng-bind="gafxml.updateUser.displayName"></span></span></a> -->
+                        <span>
+                          <p class="bg-danger alert alert-danger text-left danger btn-sm" ng-show="gafxml.eqEditUser || gafxml.ccEditUser || gafxml.ftEditUser">
+                            <span ng-show="gafxml.eqEditUser">
+                              EQ being edited on <span data-ng-bind="gafxml.eqEdited | date:'medium'"></span> by <span data-ng-bind="gafxml.eqEditUser.displayName"></span><br>
+                            </span>
+                              <span ng-show="gafxml.ccEditUser">
+                                CC being edited on <span data-ng-bind="gafxml.ccEdited | date:'medium'"></span> by <span data-ng-bind="gafxml.ccEditUser.displayName"></span><br>
+                            </span>
+                              <span ng-show="gafxml.ftEditUser">
+                                FT being edited on <span data-ng-bind="gafxml.ftEdited | date:'medium'"></span> by <span data-ng-bind="gafxml.ftEditUser.displayName"></span>
+                            </span>
+                          </p>
+                        </span>
+                        <span>
+                          <p class="bg-success alert alert-success text-left danger btn-sm" ng-show="gafxml.eqUpdated || gafxml.ccUpdated || gafxml.ftUpdated">
+                            <span ng-show="gafxml.eqUpdated">
+                              EQ Updated on <span data-ng-bind="gafxml.eqUpdated | date:'medium'"></span> by <span data-ng-bind="gafxml.eqUpdateUser.displayName"></span><br>
+                            </span>
+                            <span ng-show="gafxml.ccUpdated">
+                              CC Updated on <span data-ng-bind="gafxml.ccUpdated | date:'medium'"></span> by <span data-ng-bind="gafxml.ccUpdateUser.displayName"></span><br>
+                            </span>
+                            <span ng-show="gafxml.ftUpdated">
+                              FT Updated on <span data-ng-bind="gafxml.ftUpdated | date:'medium'"></span> by <span data-ng-bind="gafxml.ftUpdateUser.displayName"></span>
+                            </span>
+                          </p>
+                        </span>
+                        <span ng-show="gafxml.publishUser">
+                          <p class="alert alert-warning text-center">
+                              <i class="glyphicon glyphicon glyphicon-edit btn-sm bg-warning" toggle-data="toggle" title="Document is frozen. Read only."></i>
+                              Document published on <span data-ng-bind="gafxml.published | date:'medium'"></span> by <span data-ng-bind="gafxml.publishUser.displayName"></span>
+                            </p>
+                        </span>
+                      </a>
+                    </td>
+                    <td><span data-ng-bind="gafxml.vendor"></span></td>
+                    <td><span data-ng-bind="gafxml.model"></span></td>
+                    <td><span data-ng-bind="gafxml.issue"></span></td>
+                    <td><span data-ng-bind="gafxml.version"></span></td>                    
+                  </tr>
+               </tbody>
+            </table>
+           </div>
+        </div>
+    </div>
+    <div class="alert alert-warning text-center col-sm-12" data-ng-hide="!gafxmls.$resolved || gafxmls.length">
+    	No XML entries yet, why don't you <a href="/#!/gafxmls/create">create one</a>?
+    </div>
+</section>

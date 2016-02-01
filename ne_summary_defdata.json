@@ -1,0 +1,148 @@
+db.gafxmls.update(
+   { },{ $set: { {
+  "tables.1.table.data" : [{
+      "fieldName" : "NE Location"
+      "validValues" : "Up to 20 alphanumeric characters",
+      "neValue" : "",
+      "notes" : "",
+},{
+	"fieldName" : "Vendor",
+	"validValues" : "10 A/N",
+	"neValue" : "CORIANT",
+	"notes" : ""
+,{
+	"fieldName" : "Model",
+	"validValues" : "10 A/N",
+	"neValue" : "MTERA",
+	"notes" : ""
+,{
+	"fieldName" : "Issue",
+	"validValues" : "11 A/N",
+	"2.01",
+	"notes" : ""
+,{
+	"fieldName" : "NE Type",
+	"validValues" : "ADM, DCS, DLC, EDSX, ADTS, DWDM, NGDWDM",
+	"neValue" : "NGDWDM",
+	"notes" : ""
+,{
+	"fieldName" : "Frame ID",
+	"validValues" : "N/A",
+	"neValue" : "",
+	"notes" : "Ignored for TL1 NEs"
+,{
+	"fieldName" : "Release Processing Types",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : ""
+,{
+	"fieldName" : "DMB Terminated Release",
+	"validValues" : "N/A",
+	"neValue" : "N/A",
+	"notes" : "DMB terminated parameter and release processing. Not applicable to Coriant mTera"
+,{
+	"fieldName" : "MJU Terminated Release",
+	"validValues" : "",
+	"neValue" : "N/A",
+	"notes" : "MJU terminated parameter and release processing. Not applicable to Coriant mTera"
+,{
+	"fieldName" : "EDSX Release",
+	"validValues" : "",
+	"neValue" : "N/A",
+	"notes" : "Release processing on EDSX frames. Not applicable to Coriant  mTera"
+,{
+	"fieldName" : "Line Buildout",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : ""
+,{
+	"fieldName" : "DS1",
+	"validValues" : "N/A",
+	"neValue" : "N/A",
+	"notes" : "Default line buildout for all DS1 or DS3 lines. Cycle through allowable values."
+,{
+	"fieldName" : "DS3",
+	"validValues" : "",
+	"neValue" : "N/A",
+	"notes" : ""
+,{
+	"fieldName" : "Processing Options",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : ""
+,{
+	"fieldName" : "Transmit",
+	"validValues" : "Check/Uncheck",
+	"neValue" : "User Pick",
+	"notes" : "Transmit commands to NE."
+,{
+	"fieldName" : "Handle Scanning",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : "Not applicable."
+,{
+	"fieldName" : "Support Flowthrough",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : "NE provisioned by flowthrough."
+,{
+	"fieldName" : "Autonomous Message",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : "Received autonomous messages."
+,{
+	"fieldName" : "Autonomous Exception Notice",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : "Generate autonomous message exceptions."
+,{
+	"fieldName" : "Auto Settings",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : "";
+,{
+	"fieldName" : "Reissue Pending",
+	"validValues" : "Check/Uncheck",
+	"neValue" : "User Pick",
+	"notes" : "Precessing of reissues for pending orders."
+,{
+	"fieldName" : "Reissue Complete",
+	"validValues" : "",
+	"fieldName" : "",
+	"notes" : "Precessing of reissues for complete orders."
+,{
+	"fieldName" : "Undo/Cancel",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : "Precessing of GOC cancels for complete orders."
+,{
+	"fieldName" : "Miscellaneous",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : ""
+,{
+	"fieldName" : "West Mapping",
+	"validValues" : "N/A",
+	"neValue" : "",
+	"notes" : ""
+,{
+	"fieldName" : "Responsible Center",
+	"validValues" : "",
+	"neValue" : "User Pick",
+	"notes" : "Drop down list for center responsible for NE"
+,{
+	"fieldName" : "Upstream TID",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : "User entry for proper TID."
+,{
+	"fieldName" : "Originating System",
+	"validValues" : "",
+	"neValue" : "",
+	"notes" : "Drop down list for systems sending orders."
+}],
+  "_number" : "3-2",
+  "_name" : "neSummary",
+  "_displayName" : "Network Element Summary/Transport Support"
+}
+}})

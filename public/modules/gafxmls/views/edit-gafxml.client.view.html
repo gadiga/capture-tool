@@ -1,0 +1,259 @@
+
+<section data-ng-controller="GafxmlsController" data-ng-init="findOne()" class="pull-left">
+    <div class="row">
+    <div class="col-sm-12">
+        <div ng-if="getEditType()==='EQ'">
+            <h4 class="text-info">Edit Central Appendix (Equipment)</h4>
+        </div>
+        <div ng-if="getEditType()==='CC'">
+            <h4 class="text-success">Edit Central Appendix (Cross Connect)</h4>
+        </div>
+        <div ng-if="getEditType()==='FT'">
+            <h4 class="text-warning">Edit Central Appendix (Flowthrough)</h4>
+        </div>
+        <p/>
+        
+        <table width="100%">
+            <tr>
+                <td>
+                    <small><em class="text-muted">
+                        Posted on
+                                    <span data-ng-bind="gafxml.created | date:'mediumDate'"></span>
+                                    by
+                                    <span data-ng-bind="gafxml.user.displayName"></span>
+                                    <span ng-show="gafxml.updated">
+                                        | Updated on
+                                        <span data-ng-bind="gafxml.updated | date:'mediumDate'"></span>
+                                        by
+                                        <span data-ng-bind="gafxml.updateUser.displayName"></span>
+                                    </span>
+                    </em></small>
+                </td>                    
+                <td>
+                    <table class="table">
+                        <tr class="danger">
+                            <td class="text-right">
+                                <em><small>To Upload</small></em>
+                            </td>
+                            <td>
+                                <em><small><input name="fileUpload" ng-init="gafxmlContent=undefined;" class="bg-danger" accept="json" type="file" on-read-file="showContent($fileContent)" /></small></em>
+                            </td>
+                            <td>
+                                &nbsp;<a class="btn btn-danger" data-ng-click="uploadDocument()" toggle-data="toggle" title="Upload Central Appendix" ng-show="gafxmlContent">
+                                    <i class="glyphicon glyphicon-open"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>            
+            </tr>
+        </table>
+        
+        <div class="well well-sm">
+            <p>
+            <a class="btn btn-info btn-sm" data-ng-click="prepareDownload()" toggle-data="toggle" title="Download Central Appendix (Editable version)" download="CentralAppendix.json" ng-href="{{ downloadurl }}">
+                <i class="glyphicon glyphicon-save"></i>
+            </a>
+            <a class="btn btn-primary btn-sm" data-ng-show="convertedXML === ''" data-ng-click="xmlPublished = '';generateXML()" toggle-data="toggle" title="Show XML">
+               <i class="glyphicon glyphicon-sunglasses"></i>
+            </a>
+            <!--span class="label label-primary" data-ng-show="convertedXML != ''"-->
+            <a class="btn btn-primary btn-sm" data-ng-show="convertedXML != ''" data-ng-click="convertedXML = '';" toggle-data="toggle" title="Hide XML">
+                <i class="glyphicon glyphicon-object-align-bottom"></i>
+            </a>
+            <a class="btn btn-primary btn-sm" data-ng-show="convertedXML != ''" data-ng-click="openVMITool('lg');" >
+                <i class="glyphicon glyphicon-wrench" toggle-data="toggle" title="VMI Tool"></i>
+            </a>
+            <a class="btn btn-warning btn-sm" data-ng-show="convertedXML != ''" data-ng-click="openPublishXML();" toggle-data="toggle" title="Publish Central Appendix" tooltip="Document has Changed. Please save the Document!" tooltip-trigger="{{{true: 'mouseenter', false: 'none'}[scriptChanged]}}">
+                    <i class="glyphicon glyphicon-check text-danger"></i>
+            </a>
+            <a class="pull-right btn btn-success btn-sm" data-ng-click="saveCopy();" toggle-data="toggle" title="Save as a new version">
+                    <i class="glyphicon glyphicon-duplicate"></i>
+            </a>
+            <a class="pull-right btn btn-success btn-sm" data-ng-click="update();" toggle-data="toggle" title="Save">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>
+            </a>
+            <a class="pull-right btn btn-danger btn-sm" href="/#!/gafxmls" ng-click="confirmClose();" data-ng-show="authentication.user" tooltip="Document has Changed. Please save the Document!" tooltip-trigger="{{{true: 'mouseenter', false: 'none'}[scriptChanged]}}">
+                <i class="glyphicon glyphicon glyphicon-log-out" toggle-data="toggle" title="Close open Document/Show Document List"></i>
+            </a>
+            <span class="alert alert-warning text-center danger btn-sm" data-ng-show="xmlPublished != ''">{{xmlPublished}}</span>
+            </p>
+            <div data-ng-show="convertedXML != ''" class="field-show-hide"><textarea class="form-control" rows="10" id="xmlarea" ng-model="convertedXML"></textarea></div>
+            <div data-ng-show="loadGIF" class="field-show-hide"><img alt="Loading..." class="img-rectangle" src="modules/gafxmls/img/loading.gif" /></div>
+        </div>
+        <div class="alert alert-warning text-center" data-ng-show="scriptChanged">
+            <i class="glyphicon glyphicon-alert text-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i><strong>Please SAVE the document!!! Changes have been made...</strong>
+        </div>
+        <div class="row pull-left">
+            <table width="100%">
+                <tr>
+                    <td align="left">
+                        <div class="panel panel-primary pull-left" resizable r-directions="['right']" r-flex="false" r-width="360">
+                                <div class="panel-heading"><strong>Vendor</strong>:{{gafxml.vendor}} <strong>Model</strong>:{{gafxml.model}} <strong>Issue</strong>:{{gafxml.issue}} <strong>Version</strong>:{{gafxml.version}}</strong>
+                                    <a class="btn btn-info btn-xs" role="button">
+                                        <i class="glyphicon glyphicon-edit alert-danger" toggle-data="toggle" title="Editable" ng-show="getEditAllowed('EQ')"></i>
+                                        <i class="glyphicon glyphicon-eye-open alert-danger" toggle-data="toggle" title="Read Only" ng-hide="getEditAllowed('EQ')"></i>
+                                        Equipment
+                                    </a>
+                                    <a class="btn btn-success btn-xs" role="button">
+                                        <i class="glyphicon glyphicon-edit alert-danger" toggle-data="toggle" title="Editable" ng-show="getEditAllowed('CC')"></i>
+                                        <i class="glyphicon glyphicon-eye-open alert-danger" toggle-data="toggle" title="Read Only" ng-hide="getEditAllowed('CC')"></i>
+                                        Cross Connect
+                                    </a>
+                                    <a class="btn btn-warning btn-xs" role="button">
+                                        <i class="glyphicon glyphicon-edit alert-danger" toggle-data="toggle" title="Editable" ng-show="getEditAllowed('FT')"></i>
+                                        <i class="glyphicon glyphicon-eye-open alert-danger" toggle-data="toggle" title="Read Only" ng-hide="getEditAllowed('FT')"></i>
+                                        Flowthru
+                                    </a>
+                                </div>
+                                      <div class="panel-body" style="min-height: 550px; max-height: 550px; overflow-y: scroll;">
+                                        <div ng-repeat="tabl in gafxmlTables" class="vrepeat-animation">
+                                            <div ng-if="tabl.$.tableType==='EQ'">
+                                                <button popover="{{tabl.$.displayName}}" popover-trigger="mouseenter" ng-click="openLoader('sm', tabl)" type="button" class="btn btn-xs btn-info">{{tabl.$.number}} - {{tabl.$.displayName}}</button><p/>
+                                            </div>
+                                            <div ng-if="tabl.$.tableType==='CC'">
+                                                <button popover="{{tabl.$.displayName}}" popover-trigger="mouseenter" ng-click="openLoader('sm', tabl)" type="button" class="btn btn-xs btn-success">{{tabl.$.number}} - {{tabl.$.displayName}}</button><p/>
+                                            </div>
+                                            <div ng-if="tabl.$.tableType==='FT'">
+                                                <button popover="{{tabl.$.displayName}}" popover-trigger="mouseenter" ng-click="openLoader('sm', tabl)" type="button" class="btn btn-xs btn-warning">{{tabl.$.number}} - {{tabl.$.displayName}}</button><p/>
+                                            </div>
+                                        </div>
+                                      </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="panel panel-primary pull-right" resizable r-directions="['right']" r-flex="false" r-width="1400">
+                                <div class="panel-heading"><strong>{{currentTable.$.number}} - {{currentTable.$.displayName}}
+                                    <i class="glyphicon glyphicon-edit alert-danger" title="Editable Table" ng-show="getEditAllowed(currentTable.$.tableType)"></i>
+                                    <i class="glyphicon glyphicon-eye-open alert-danger" toggle-data="toggle" title="Read Only" ng-show="!getEditAllowed(currentTable.$.tableType)"></i></strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a class="btn btn-primary" ng-show="containsHierarchy(currentTable);" data-ng-click="openTreeView('lg');" >
+                                        <i class="glyphicon glyphicon-grain" toggle-data="toggle" title="{{hierarchyTitle}}"></i>
+                                    </a>
+                                    <mark><strong><a href="#" e-rows="7" e-cols="40" editable-textarea="currentTable.$.description" e-required e-placeholder="{{currentTable.$.displayName}}">{{ 'Table Description' }}</a></strong></mark>
+                                    <input type="text" class="pull-right" size="35" ng-model="searchText" style="color:black"><span class="label label-primary pull-right">Search</span>
+                                </div>
+                                      <div class="panel-body" style="min-height: 600px; max-height: 600px; overflow-y: hidden; overflow-x: scroll;">
+                                        <p>
+                                            <!-- <div ng-if="currentTable.$.tableType === getEditType()">
+                                                <gafxml-table ng-init="readWrite='edit'" editMode="edit"/>
+                                            </div>
+                                            <div ng-if="currentTable.$.tableType !==  getEditType()">
+                                                <gafxml-table ng-init="readWrite='read'" editMode="read"/>
+                                            </div> -->
+                                            <div ng-if="getEditAllowed(currentTable.$.tableType)">
+                                                <gafxml-table ng-init="readWrite='edit'" editMode="edit"/>
+                                            </div>
+                                            <div ng-if="!getEditAllowed(currentTable.$.tableType)">
+                                                <gafxml-table ng-init="readWrite='read'" editMode="read"/>
+                                            </div>
+                                        </p>
+                                      </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <script type="text/javascript">
+            function helloWorld(){alert('Hello Guru World!!');}
+        </script>
+
+
+        <script type="text/ng-template" id="blocklyEditor.html">
+            <div class="modal-header">
+                <strong>Blockly Editor</strong>
+            </div>
+            <div class="modal-body">
+                <iframe frameborder="0" width="1500" height="800" ng-src="../modules/gafxmls/blockly-test-orig.html"></iframe>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-warning btn-sm" ng-click="cancelDelete()">Close Editor</button>
+                <button class="btn btn-success btn-sm" ng-click="saveAndClose()">Save and Close Editor</button>
+            </div>
+        </script>
+
+
+        <script type="text/ng-template" id="vmiTool.html">
+            <div class="modal-header">
+                <strong>VMI Tool</strong>
+            </div>
+            <div class="modal-body">
+                <iframe frameborder="0" width="1280" height="600" ng-src="../modules/gafxmls/vmiTool.html"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning btn-sm" ng-click="cancelDelete()">Close VMI Tool</button>
+            </div>
+        </script>
+
+
+        <script type="text/ng-template" id="TreeView.html">
+            <div class="modal-header">
+                <strong>Equipment Hierarchy - {{gafxml.vendor}} - {{gafxml.model}} - {{gafxml.issue}} - {{gafxml.version}}</strong>
+            </div>
+            <div class="modal-body">
+                <iframe frameborder="0" width="1280" height="850" ng-src="../modules/gafxmls/TreeView.html"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning btn-sm" ng-click="cancelDelete()">Close Equipment Hierarchy</button>
+                <button class="btn btn-success btn-sm" ng-click="saveAndClose()">Save and Close Equipment Hierarchy</button>
+            </div>
+        </script>
+
+
+        <script type="text/ng-template" id="saveAck.html">
+            <div class="modal-header bg-warning">
+                <h3 class="modal-title text-danger">Save Status</h3>
+            </div>
+            <div class="modal-body">
+                <bold>{{saveStatus}}<strong>{{saveAckStatus}}</strong></bold>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    <button class="btn btn-warning btn-sm" ng-click="cancelDelete()" ng-show="(saveAckStatus==='Saved Unsuccessfully!' || saveAckStatus==='Saved successfully!')">OK</button>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="publishXML.html">
+            <div class="modal-header bg-warning">
+                <h3 class="modal-title text-danger">Publish Central Appendix to CVS (Checkin)</h3>
+            </div>
+            <div class="modal-body">
+                <form data-ng-submit="publishXML()" class="form-horizontal" autocomplete="off">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="authorComments">Author Comments</label>
+                                <input type="textarea" id="authorComments" name="authorComments" class="form-control" data-ng-model="publishForm.authorComments" placeholder="No Comments">
+                            </div>
+                            <div class="form-group">
+                                <label for="release">Release</label>
+                                <input type="text" id="release" name="release" class="form-control" data-ng-model="publishForm.release" placeholder="1.0">
+                            </div>
+                            <div class="text-center form-group">
+                                <button type="submit" class="btn btn-primary">Publish to CVS</button>
+                            </div>
+                        </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer bg-warning">
+                <div class="text-center">
+                    <button class="btn btn-warning btn-sm" ng-click="cancelPublish()">Close without Publishing</button>
+                </div>
+            </div>
+        </script>
+
+
+        <script type="text/ng-template" id="loader.html">
+            <div class="modal-header bg-primary">
+                <strong>Please wait Loading records....<i class="fa fa-spinner fa-spin fa-2x pull-center"></i></strong>
+            </div>
+            <!--<div class="modal-body">
+                <mark>
+                    <i class="fa fa-spinner fa-spin fa-2x pull-center"></i>
+                </mark>
+            </div>-->
+        </script>
+    </div>
+    </div>
+</section>
