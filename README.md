@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+[![CAPTURE Logo](./public/modules/core/img/brand/capturelogo.png)](http://meanjs.org/)
 [![MEAN.JS Logo](http://meanjs.org/img/logo-small.png)](http://meanjs.org/)
 
 [![Build Status](https://travis-ci.org/meanjs/mean.svg?branch=master)](https://travis-ci.org/meanjs/mean)
@@ -146,3 +148,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+=======
+# capture-tool
+GAF-XML CAPTURE Tool with MEANjs
+>>>>>>> c180e601ed87f8603eb3ae43fe73d4a4a85bffdf
