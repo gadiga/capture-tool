@@ -1,4 +1,4 @@
-<section data-ng-controller="GafxmlsController" data-ng-init="loadGIF=true;find();loadGIF=false;">
+<section class="row" data-ng-controller="GafxmlsController" data-ng-init="loadGIF=true;find();loadGIF=false;">
     <div class="well well-sm col-sm-12">
         <span class="label label-primary">Vendor</span>
         <input type="text" size="25" ng-model="searchText.vendor">
@@ -13,9 +13,11 @@
         <div class="panel panel-primary">
            <div class="panel-heading">
               <h3 class="panel-title text-center">Central Appendix Documents&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span   class="label label-primary"><a class="btn btn-success" ng-click="initScreenData();" href="/#!/gafxmls/create" toggle-data="toggle" title="Create a new Central Appendix">
-                   <i class="glyphicon glyphicon-plus"></i>
-                </a></span>
+                <span   class="label label-primary">
+                    <a class="btn btn-success" ng-click="initScreenData();" href="/#!/gafxmls/create" toggle-data="toggle" title="Create a new Central Appendix">
+                       <i class="glyphicon glyphicon-plus-sign"> Add Document</i>
+                    </a>
+                </span>
               </h3>
            </div>
            <div class="panel-body">
