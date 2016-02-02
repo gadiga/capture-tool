@@ -413,6 +413,16 @@
 
   <script>
     // var varList = [["eqp_state", "eqp_state"], ["ALMPF", "ALMPF"], ["EXTCHAN", "EXTCHAN"], ["FECTYPE", "FECTYPE"]];
+    function sort_unique(arr) {
+      arr = arr.sort(function (a, b) { return a*1 - b*1; });
+      var ret = [arr[0]];
+      for (var i = 1; i < arr.length; i++) { // start loop at 1 as element 0 can never be a duplicate
+        if (JSON.stringify(arr[i-1]) !== JSON.stringify(arr[i])) {
+          ret.push(arr[i]);
+        }
+      }
+      return ret;
+    }
     var varList=[], tagList=[];
     var tagParmList=[], posParmList=[];
     var blocklyTitle = "Parms for Vars"
@@ -805,6 +815,7 @@
           }
         }
         localList.sort();
+        localList = sort_unique(localList);
         this.appendValueInput("parm")
             .appendField("if")
             // .appendField(new Blockly.FieldDropdown([["eqp_state", "eqp_state"], ["ALMPF", "ALMPF"], ["EXTCHAN", "EXTCHAN"], ["FECTYPE", "FECTYPE"]]), "SENSOR")
@@ -863,6 +874,8 @@
                   }
                 }
                 localList.sort();
+
+                localList = sort_unique(localList);
                 var start = 0;
                 var incrementStep = 15;
                 var listGen = function() {
@@ -911,6 +924,7 @@
                   localList = reservedList;
                 }
                 localList.sort();
+                localList = sort_unique(localList);
 
                 var start = 0;
                 var incrementStep = 15;
@@ -1370,6 +1384,7 @@
                     }
                   }
                   localList.sort();
+                  localList = sort_unique(localList);
                   var start = 0;
           var incrementStep = 15;
           var listGen = function() {
