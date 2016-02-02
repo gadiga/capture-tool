@@ -1,5 +1,5 @@
 <section class="row" data-ng-controller="HomeController">
-	<div class="well well-sm col-sm-12">
+	<div class="well well-sm col-sm-12 col-lg-12">
 		<span class="label label-primary">Vendor</span>
 		<input type="text" size="25" ng-model="searchText.vendor">
 		<span class="label label-primary">Model</span>
@@ -9,7 +9,7 @@
 		<span class="label label-primary">Version</span>
 		<input type="text" size="15" ng-model="searchText.version">
 	</div>
-	<div class="col-sm-12">
+	<div class="col-sm-12 col-lg-12">
 		<div class="panel panel-primary">
 		   <div class="panel-heading">
 		      	<h3 class="panel-title text-center">Central Appendix Document</h3>
@@ -33,7 +33,7 @@
 			      		<a data-ng-href="#!/gafxmls/{{gafxml._id}}" class="repeat-animation list-group-item">
 				      		<p class="alert alert-info text-center" ng-show="gafxml.freezeDocUser">
 	                          <i class="glyphicon glyphicon glyphicon-ice-lolly btn-sm bg-info" toggle-data="toggle" title="Document is frozen. Read only."></i>
-	                          Document frozen <span data-ng-bind="gafxml.freezeDoc | date:'medium'"></span> by <span data-ng-bind="gafxml.freezeDocUser.displayName">
+	                          Document frozen <span data-ng-bind="gafxml.freezeDoc | date:'medium'"></span> by <span data-ng-bind="gafxml.freezeDocUser.displayName"></span>
 	                        </p>
 	                        Posted on <span data-ng-bind="gafxml.created | date:'medium'"></span> by <span data-ng-bind="gafxml.user.displayName"></span>
 	                        <span>
@@ -80,14 +80,14 @@
 		   </div>
 		</div>
 	</div>
-	<div class="well col-sm-12">
+	<div class="well col-sm-12 col-lg-12">
 		<h2><img alt="Ericsson" class="img-rectangle" src="modules/core/img/brand/capturelogo.png" /> Documentation</h2>
 		<p>
 			TBD
 		</p>
 		<cite>Enjoy &amp; Keep Us Updated</cite>
 	</div>
-	<div class="navbar navbar-default col-sm-12">The 
+	<div class="navbar navbar-default col-sm-12 col-lg-12">The
 		<img alt="Ericsson" class="img-rectangle" src="modules/core/img/brand/capturelogo.png" /> Team. 
 		<a href="mailto:david.dunham@ericsson.com">David Dunham</a>;
 		<a href="mailto:gururaj.adiga@ericsson.com">Guru Adiga</a>;
