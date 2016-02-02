@@ -38,7 +38,7 @@
                       <a data-ng-href="#!/gafxmls/{{gafxml._id}}" class="repeat-animation list-group-item">
                         <p class="alert alert-info text-center" ng-show="gafxml.freezeDocUser">
                           <i class="glyphicon glyphicon glyphicon-ice-lolly btn-sm bg-info" toggle-data="toggle" title="Document is frozen. Read only."></i>
-                          Document frozen <span data-ng-bind="gafxml.freezeDoc | date:'medium'"></span> by <span data-ng-bind="gafxml.freezeDocUser.displayName">
+                          Document frozen <span data-ng-bind="gafxml.freezeDoc | date:'medium'"></span> by <span data-ng-bind="gafxml.freezeDocUser.displayName"></span>
                         </p>
                         Posted on <span data-ng-bind="gafxml.created | date:'medium'"></span> by <span data-ng-bind="gafxml.user.displayName"></span>
                         <!-- <span ng-show="gafxml.updated">| Updated on <span data-ng-bind="gafxml.updated | date:'medium'"></span> by <span data-ng-bind="gafxml.updateUser.displayName"></span></span></a> -->

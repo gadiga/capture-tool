@@ -89,7 +89,8 @@
                 <tr>
                     <td align="left">
                         <div class="panel panel-primary pull-left" resizable r-directions="['right']" r-flex="false" r-width="360">
-                                <div class="panel-heading"><strong>Vendor</strong>:{{gafxml.vendor}} <strong>Model</strong>:{{gafxml.model}} <strong>Issue</strong>:{{gafxml.issue}} <strong>Version</strong>:{{gafxml.version}}</strong>
+                                <div class="panel-heading">
+                                    <strong>Vendor</strong>:{{gafxml.vendor}} <strong>Model</strong>:{{gafxml.model}} <strong>Issue</strong>:{{gafxml.issue}} <strong>Version</strong>:{{gafxml.version}}</strong>
                                     <a class="btn btn-info btn-xs" role="button">
                                         <i class="glyphicon glyphicon-edit alert-danger" toggle-data="toggle" title="Editable" ng-show="getEditAllowed('EQ')"></i>
                                         <i class="glyphicon glyphicon-eye-open alert-danger" toggle-data="toggle" title="Read Only" ng-hide="getEditAllowed('EQ')"></i>
@@ -123,14 +124,29 @@
                     </td>
                     <td>
                         <div class="panel panel-primary pull-right" resizable r-directions="['right']" r-flex="false" r-width="1400">
-                                <div class="panel-heading"><strong>{{currentTable.$.number}} - {{currentTable.$.displayName}}
-                                    <i class="glyphicon glyphicon-edit alert-danger" title="Editable Table" ng-show="getEditAllowed(currentTable.$.tableType)"></i>
-                                    <i class="glyphicon glyphicon-eye-open alert-danger" toggle-data="toggle" title="Read Only" ng-show="!getEditAllowed(currentTable.$.tableType)"></i></strong>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a class="btn btn-primary" ng-show="containsHierarchy(currentTable);" data-ng-click="openTreeView('lg');" >
-                                        <i class="glyphicon glyphicon-grain" toggle-data="toggle" title="{{hierarchyTitle}}"></i>
-                                    </a>
-                                    <mark><strong><a href="#" e-rows="7" e-cols="40" editable-textarea="currentTable.$.description" e-required e-placeholder="{{currentTable.$.displayName}}">{{ 'Table Description' }}</a></strong></mark>
-                                    <input type="text" class="pull-right" size="35" ng-model="searchText" style="color:black"><span class="label label-primary pull-right">Search</span>
+                                <div class="panel-heading">
+                                    <div class="row">
+                                         <div class="col-lg-8">
+                                             <strong>{{currentTable.$.number}} - {{currentTable.$.displayName}}
+                                                 <i class="glyphicon glyphicon-edit alert-danger" title="Editable Table" ng-show="getEditAllowed(currentTable.$.tableType)"></i>
+                                                 <i class="glyphicon glyphicon-eye-open alert-danger" toggle-data="toggle" title="Read Only" ng-show="!getEditAllowed(currentTable.$.tableType)"></i></strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                                             <a class="btn btn-primary" ng-show="containsHierarchy(currentTable);" data-ng-click="openTreeView('lg');" >
+                                                 <i class="glyphicon glyphicon-grain" toggle-data="toggle" title="{{hierarchyTitle}}"></i>
+                                             </a>
+                                             <mark><strong><a href="#" e-rows="7" e-cols="40" editable-textarea="currentTable.$.description" e-required e-placeholder="{{currentTable.$.displayName}}">{{ 'Table Description' }}</a></strong></mark>
+                                         </div>
+                                        <div class="col-lg-4">
+                                            <div class="input-group pull-right">
+                                                <input size="35" type="text" class="form-control" ng-model="searchText" placeholder="Search for.....">
+											<span class="input-group-btn">
+												<button class="btn btn-default" type="button">Go!</button>
+											</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--<input type="text" class="pull-right" size="35" ng-model="searchText" style="color:black"><span class="label label-primary pull-right">Search</span>-->
+
                                 </div>
                                       <div class="panel-body" style="min-height: 600px; max-height: 600px; overflow-y: hidden; overflow-x: scroll;">
                                         <p>

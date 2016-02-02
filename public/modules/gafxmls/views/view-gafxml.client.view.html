@@ -1,6 +1,6 @@
 <section data-ng-controller="GafxmlsController" data-ng-init="findOne()" class="pull-left">
 	<div class="row">
-	<div class="col-sm-12">
+	<div class="col-lg-12">
 		<h4 data-ng-bind="gafxml.name"></h4>
 		<small>
 			<em class="text-muted">
@@ -95,12 +95,24 @@
 		            </td>
 		            <td>
 		                <div class="panel panel-primary" resizable r-directions="['right']" r-flex="false" r-width="1400">
-		                        <div class="panel-heading"><strong>{{currentTable.$.number}} - {{currentTable.$.displayName}}</strong>
-							        <a class="btn btn-primary" ng-show="containsHierarchy(currentTable);" data-ng-click="openTreeView('lg');" >
-							            <i class="glyphicon glyphicon-grain" toggle-data="toggle" title="{{hierarchyTitle}}"></i>
-							        </a>
-					            	<mark><strong><a href="#" e-rows="7" e-cols="40" editable-textarea="currentTable.$.description" e-required e-placeholder="{{currentTable.$.displayName}}">{{ 'Table Description' }}</a></strong></mark>
-	                                <input type="text" class="pull-right" size="35" ng-model="searchText" style="color:black"><span class="label label-primary pull-right">Search</span>
+		                        <div class="panel-heading">
+									<div class="row">
+										<div class="col-lg-8">
+											<strong>{{currentTable.$.number}} - {{currentTable.$.displayName}}</strong>
+											<a class="btn btn-primary" ng-show="containsHierarchy(currentTable);" data-ng-click="openTreeView('lg');" >
+												<i class="glyphicon glyphicon-grain" toggle-data="toggle" title="{{hierarchyTitle}}"></i>
+											</a>
+											<mark><strong><a href="#" e-rows="7" e-cols="40" editable-textarea="currentTable.$.description" e-required e-placeholder="{{currentTable.$.displayName}}">{{ 'Table Description' }}</a></strong></mark>
+										</div>
+										<div class="col-lg-4">
+											<div class="input-group pull-right">
+												<input size="35" type="text" class="form-control" ng-model="searchText" placeholder="Search for.....">
+											<span class="input-group-btn">
+												<button class="btn btn-default" type="button">Go!</button>
+											</span>
+											</div>
+										</div>
+									</div>
 		                        </div>
 	                              <div class="panel-body" style="min-height: 600px; max-height: 600px; overflow-y: hidden; overflow-x: scroll;">
 	                                <p>
