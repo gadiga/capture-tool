@@ -17,6 +17,8 @@
 	<type name="temsAction" base="string" minLength="1" maxLength="10" displayAs="checkbox" domain="actionMappings" />
 	<type name="utilities" base="string" minLength="1" maxLength="10" displayAs="checkbox" domain="utilityMappings" />
 	<type name="protocols" base="string" minLength="1" maxLength="10" displayAs="checkbox" domain="protocolMappings" />
+	<type name="autonMessages" base="string" minLength="1" maxLength="10" displayAs="checkbox" domain="autonMsgDialogMappings" />
+	<type name="swdlFunctions" base="string" minLength="1" maxLength="10" displayAs="checkbox" domain="swdlFunctionMappings" />
 	<type name="fromToOptionList" base="string" minLength="1" maxLength="10" displayAs="checkbox" domain="toFromMappings" />
 	<type name="optReqOptionList" base="string" minLength="1" maxLength="10" displayAs="checkbox" domain="optReqMappings" />
 	<type name="yesNoOptionList" base="string" minLength="1" maxLength="10" displayAs="checkbox" domain="yesNoMappings" />
@@ -31,9 +33,11 @@
 	<type name="siglvlLookupList" base="string" minLength="1" maxLength="10" displayAs="checkboxopen"/>
 	<type name="svcTypeLookupList" base="string" minLength="1" maxLength="10" displayAs="checkboxopen"/>
 	<type name="segmentTable" base="string" minLength="1" maxLength="10" displayAs="segment"/>
+	<type name="getTextList" base="string" minLength="1" maxLength="10" displayAs="textlist"/>
+
 	<nameMappings>
-		<mapping name="release">Transport Release</mapping>		
-		<mapping name="issue">Issue</mapping>		
+		<mapping name="release">Transport Release</mapping>
+		<mapping name="issue">Issue</mapping>
 		<mapping name="devcd">Device Code</mapping>
 		<mapping name="devId-unitMapping">Device ID Start/Unit Mapping</mapping>
 		<mapping name="devidRange">Device ID Range</mapping>
@@ -77,9 +81,9 @@
 		<mapping name="domain">Domain</mapping>
 		<mapping name="eqpTrans">Equipment Translations</mapping>
 		<mapping name="ccTrans">Cross Connect Translations</mapping>
-		<mapping name="fromToOption">From/To</mapping> 
+		<mapping name="fromToOption">From/To</mapping>
 		<mapping name="tagName">Transport Name</mapping>
-		<mapping name="termination">Termination</mapping> 
+		<mapping name="termination">Termination</mapping>
 		<mapping name="additionalCriteria">Additional Criteria</mapping>
 		<mapping name="state">State</mapping>
 		<mapping name="meaning">Meaning</mapping>
@@ -89,20 +93,21 @@
 		<mapping name="denyText">Deny Text</mapping>
 		<mapping name="validDeny">Valid Deny</mapping>
 		<mapping name="ftRequired">Required for Flowthrough (Y/N)</mapping>
-		<mapping name="bankCode">Bank Code</mapping>		
-		<mapping name="devIdStart">Device ID Start</mapping>		
-		<mapping name="devIdEnd">Device ID End</mapping>		
-		<mapping name="levelsBelow">Levels Below</mapping>		
-		<mapping name="utility">Utility</mapping>		
-		<mapping name="fieldLength">Field Length</mapping>		
-		<mapping name="optReqConditional">Req/Opt/Conditional</mapping>		
-		<mapping name="command">Commands</mapping>		
-		<mapping name="responseFormat">Response Format</mapping>		
-		<mapping name="swdlStep">SWDL Steps/Functions</mapping>		
+		<mapping name="bankCode">Bank Code</mapping>
+		<mapping name="devIdStart">Device ID Start</mapping>
+		<mapping name="devIdEnd">Device ID End</mapping>
+		<mapping name="levelsBelow">Levels Below</mapping>
+		<mapping name="utility">Utility</mapping>
+		<mapping name="fieldLength">Field Length</mapping>
+		<mapping name="optReqConditional">Req/Opt/Conditional</mapping>
+		<mapping name="command">Commands</mapping>
+		<mapping name="responseFormat">Response Format</mapping>
+		<mapping name="swdlStep">SWDL Steps/Functions</mapping>
 		<mapping name="tl1Cmd">Command Syntax</mapping>
 		<mapping name="dialogName">Dialog Name</mapping>
 		<mapping name="dialogDescription">Dialog Description</mapping>
 		<mapping name="protocol">Protocol</mapping>
+		<mapping name="autonomousMessage">Autonomous Message</mapping>
 	</nameMappings>
 	<actionMappings mapValue="action">
 		<mapping action="Add">Add</mapping>
@@ -125,12 +130,12 @@
 		<mapping tofrom="To">To</mapping>
 	</toFromMappings>
 	<optReqMappings mapValue="optreq">
-	<mapping optreq="Optional">Optional</mapping>
-	<mapping optreq="Required">Required</mapping>
+		<mapping optreq="Optional">Optional</mapping>
+		<mapping optreq="Required">Required</mapping>
 	</optReqMappings>
 	<yesNoMappings mapValue="yesno">
-	<mapping yesno="Yes">Yes</mapping>
-	<mapping yesno="No">No</mapping>
+		<mapping yesno="Yes">Yes</mapping>
+		<mapping yesno="No">No</mapping>
 	</yesNoMappings>
 	<cmdMappings mapValue="cmd">
 		<mapping cmd="Transmit">Transmit</mapping>
@@ -151,6 +156,29 @@
 		<mapping protocol="PDS">PDS</mapping>
 		<mapping protocol="SNMP">SNMP</mapping>
 	</protocolMappings>
+	<swdlFunctionMappings mapValue="swdlFunction">
+		<mapping swdlFunction="Apply Software">Apply Software</mapping>
+		<mapping swdlFunction="Audit Cross Connects">Audit Cross Connects</mapping>
+		<mapping swdlFunction="Command">Command</mapping>
+		<mapping swdlFunction="Command with Auton Msg">Command with Auton Msg</mapping>
+		<mapping swdlFunction="Delay Timer">Delay Timer</mapping>
+		<mapping swdlFunction="Install Software">Install Software</mapping>
+		<mapping swdlFunction="Patch Install">Patch Install</mapping>
+		<mapping swdlFunction="Patch Software File Transfer">Patch Software File Transfer</mapping>
+		<mapping swdlFunction="Pause">Pause</mapping>
+		<mapping swdlFunction="Software File Transfer">Software File Transfer</mapping>
+		<mapping swdlFunction="Template">Template</mapping>
+		<mapping swdlFunction="Update Cross Connects">Update Cross Connects</mapping>
+		<mapping swdlFunction="Update DB Issue">Update DB Issue</mapping>
+		<mapping swdlFunction="Verify Software Issue">Verify Software Issue</mapping>
+	</swdlFunctionMappings>
+	<autonMsgDialogMappings mapValue="autonDialogs">
+		<mapping autonDialogs="BULKAUTONMSG">Install Software BMBR</mapping>
+		<mapping autonDialogs="COPYPDL_AM">Copy PDL</mapping>
+		<mapping autonDialogs="COPYSWDL_AM">Copy SWDL</mapping>
+		<mapping autonDialogs="INSTSWDL_AM">Install SWDL</mapping>
+		<mapping autonDialogs="PATCHSW_AM">Patch SWDL</mapping>
+	</autonMsgDialogMappings>
 	<table tableType="EQ" tableWidth="2000px" number="1-0" name="globalDialogParm" description="Global Parameters" displayName="Global Parameters">
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="parmScrLabel" type="defaultType" minOccurs="1" maxOccurs="1" description="Parameter Screen Label"/>
@@ -158,7 +186,7 @@
 		<column colSize="750px" name="parmValues" type="segmentTable" minOccurs="1" maxOccurs="1" description="Values"/>
 		<column colSize="400px" name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
 	</table>
-	<table tableType="EQ" tableWidth="1100px" number="3-1" name="releaseToIssueMap" description="Release to Network Element Issue Level Mapping" displayName="Release to Network Element Issue Level Mapping">
+	<table tableType="EQ" tableWidth="1300px" number="3-1" name="releaseToIssueMap" description="Release to Network Element Issue Level Mapping" displayName="Release to Network Element Issue Level Mapping">
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="release" type="release" minOccurs="1" description=" Transport Release"/>
 		<column colSize="350px" name="neIssue" type="issue" minOccurs="1" maxOccurs="10" description="NE Issues"/>
@@ -191,7 +219,7 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="350px" name="devcd" type="devcdList" minOccurs="1" maxOccurs="1" description="Device Code">
-		<varTable name="equipProv" varColumn="devcd" storageType="NEPARM"></varTable>
+			<varTable name="equipProv" varColumn="devcd" storageType="NEPARM"></varTable>
 		</column>
 		<column colSize="250px" name="parmScrLabel" type="defaultType" minOccurs="1" maxOccurs="1" description="Parameter Screen Label"/>
 		<column colSize="250px" name="tagName" type="defaultType" minOccurs="1" maxOccurs="1" description="Tag Name"/>
@@ -212,7 +240,7 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="250px" name="devcd" type="devcdList" minOccurs="1" maxOccurs="1" description="Device Code">
-		<varTable name="equipProv" varColumn="devcd" storageType="NEPARM"></varTable>
+			<varTable name="equipProv" varColumn="devcd" storageType="NEPARM"></varTable>
 		</column>
 		<column colSize="250px" name="temsAction" type="temsAction" minOccurs="1" maxOccurs="10" description="Transport Action"/>
 		<column colSize="250px" name="provCmd" type="provCmd" minOccurs="1" maxOccurs="10" description="Provisioning Command"/>
@@ -254,13 +282,13 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="250px" name="siglvl" type="siglvlLookupList" minOccurs="1" maxOccurs="1" description="Signal Level">
-		<varTable name="ccParmByType" varColumn="siglvl"></varTable>
+			<varTable name="ccParmByType" varColumn="siglvl"></varTable>
 		</column>
 		<column colSize="250px" name="fromToDevcd" type="devcdList" minOccurs="1" maxOccurs="1" description="From/To Device Code">
-		<varTable name="equipProv" varColumn="devcd"></varTable>
+			<varTable name="equipProv" varColumn="devcd"></varTable>
 		</column>
 		<column colSize="250px" name="toFromDevcd" type="devcdList" minOccurs="1" maxOccurs="1" description="To/From Device Code">
-		<varTable name="equipProv" varColumn="devcd"></varTable>
+			<varTable name="equipProv" varColumn="devcd"></varTable>
 		</column>
 		<column colSize="400px" name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
 	</table>
@@ -268,10 +296,10 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="250px" name="siglvl" type="siglvlLookupList" minOccurs="1" maxOccurs="1" description="Signal Level">
-		<varTable name="ccParmByType" varColumn="siglvl"></varTable>
+			<varTable name="ccParmByType" varColumn="siglvl"></varTable>
 		</column>
 		<column colSize="250px" name="devcd" type="devcdList" minOccurs="1" maxOccurs="1" description="Device Code">
-		<varTable name="equipProv" varColumn="devcd"></varTable>
+			<varTable name="equipProv" varColumn="devcd"></varTable>
 		</column>
 		<column colSize="250px" name="additionalCriteria" type="defaultType" minOccurs="1" maxOccurs="10" description="Additional Criteria"/>
 		<column colSize="250px" name="termination" isSegmented="true" segmentPrefix="fseg,tseg,sfseg,stseg" type="defaultType" minOccurs="1" maxOccurs="1" description="Termination ID"/>
@@ -281,7 +309,7 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="250px" name="siglvl" type="siglvlLookupList" minOccurs="1" maxOccurs="1" description="Signal Level">
-		<varTable name="ccParmByType" varColumn="siglvl"></varTable>
+			<varTable name="ccParmByType" varColumn="siglvl"></varTable>
 		</column>
 		<column colSize="250px" name="parmScrLabel" type="defaultType" minOccurs="1" maxOccurs="1" description="Parameter Screen Label"/>
 		<column colSize="250px" name="tagName" type="defaultType" minOccurs="1" maxOccurs="1" description="Tag Name"/>
@@ -298,15 +326,15 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="250px" name="ccType" type="ccTypeLookupList" minOccurs="1" maxOccurs="1" description="Cross Connect Type">
-		<varTable name="ccParmByType" varColumn="ccType"></varTable>
+			<varTable name="ccParmByType" varColumn="ccType"></varTable>
 		</column>
 		<column colSize="250px" name="siglvl" type="siglvlLookupList" minOccurs="1" maxOccurs="1" description="Signal Levels">
-		<varTable name="ccParmByType" varColumn="siglvl"></varTable>
+			<varTable name="ccParmByType" varColumn="siglvl"></varTable>
 		</column>
 		<column colSize="250px" name="temsAction" type="temsAction" minOccurs="1" maxOccurs="10" description="Transport Action"/>
 		<column colSize="250px" name="provCmd" type="provCmd" minOccurs="1" maxOccurs="10" description="Provisioning Command"/>
 		<column colSize="400px" name="provSequence" type="script" minOccurs="1" maxOccurs="10" description=" Provisioning Sequence">
-			<varTable name="crossConnectParm" varColumn="neParm" storageType="NEPARM"></varTable>			
+			<varTable name="crossConnectParm" varColumn="neParm" storageType="NEPARM"></varTable>
 			<varTable name="crossConnectParm" varColumn="tagName" storageType="TAG"></varTable>
 			<varTable name="crossConnectParm" varColumn="tagName" varMatchColumn="neParm" storageType="TAG=NEPARM"></varTable>
 			<varTable name="ccTermDerivation" varColumn="termination" storageType="TAG">
@@ -327,7 +355,7 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="250px" name="devcd" type="devcdList" minOccurs="1" maxOccurs="1" description="Device Code">
-		<varTable name="equipProv" varColumn="devcd"></varTable>
+			<varTable name="equipProv" varColumn="devcd"></varTable>
 		</column>
 		<column colSize="250px" name="parmName" type="defaultType" minOccurs="1" maxOccurs="1" description="Name"/>
 		<column colSize="250px" name="parmTag" type="defaultType" minOccurs="1" maxOccurs="1" description="Tag"/>
@@ -339,10 +367,10 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="250px" name="devcd" type="devcdList" minOccurs="1" maxOccurs="1" description="Device Code">
-		<varTable name="equipProv" varColumn="devcd"></varTable>
+			<varTable name="equipProv" varColumn="devcd"></varTable>
 		</column>
 		<column colSize="400px" name="eqpTrans" type="script" minOccurs="1" maxOccurs="10" description=" Translations">
-			<varTable name="ftDevcdParm" varColumn="parmTag" storageType="NEPARM">			
+			<varTable name="ftDevcdParm" varColumn="parmTag" storageType="NEPARM">
 				<filterVarTable whereTableColName="devcd" equalsVarTableColName="devcd"></filterVarTable>
 			</varTable>
 			<varTable name="commonDialogParm" varColumn="tagName" storageType="NEPARM">
@@ -360,7 +388,7 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="250px" name="siglvl" type="siglvlLookupList" minOccurs="1" maxOccurs="1" description="Signal Level">
-		<varTable name="ccParmByType" varColumn="siglvl"></varTable>
+			<varTable name="ccParmByType" varColumn="siglvl"></varTable>
 		</column>
 		<column colSize="250px" name="svcType" type="defaultType" minOccurs="1" maxOccurs="1" description="svcType"/>
 		<column colSize="250px" name="parmName" type="defaultType" minOccurs="1" maxOccurs="1" description="Name"/>
@@ -369,14 +397,14 @@
 		<column colSize="750px" name="domain" type="segmentTable" minOccurs="1" maxOccurs="1" description="Domain"/>
 		<column colSize="400px" name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
 	</table>
-	<table tableType="FT" tableWidth="1900px" number="3-14" name="ftCCTrans" description="FT Cross Connect Translations" displayName="FT Cross Connect Translations">
+	<table tableType="FT" tableWidth="2000px" number="3-14" name="ftCCTrans" description="FT Cross Connect Translations" displayName="FT Cross Connect Translations">
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="250px" name="siglvl" type="siglvlLookupList" minOccurs="1" maxOccurs="1" description="Signal Level">
-		<varTable name="ccParmByType" varColumn="siglvl"></varTable>
+			<varTable name="ccParmByType" varColumn="siglvl"></varTable>
 		</column>
 		<column colSize="250px" name="svcType" type="svcTypeLookupList" minOccurs="1" maxOccurs="1" description="Service Type">
-		<varTable name="ftSiglvlParm" varColumn="svcType"></varTable>
+			<varTable name="ftSiglvlParm" varColumn="svcType"></varTable>
 		</column>
 		<column colSize="250px" name="fromToOption" type="fromToOptionList" minOccurs="1" maxOccurs="10" description=" From To" />
 		<column colSize="400px" name="ccTrans" type="script" minOccurs="1" maxOccurs="10" description=" Translations">
@@ -398,7 +426,7 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description="issue"/>
 		<column colSize="250px" name="devcd" type="devcdList" minOccurs="1" maxOccurs="1" description="Device Code">
-		<varTable name="equipProv" varColumn="devcd" storageType="NEPARM"></varTable>
+			<varTable name="equipProv" varColumn="devcd" storageType="NEPARM"></varTable>
 		</column>
 		<column colSize="250px" name="devIdStart" type="devid" minOccurs="1" maxOccurs="1" description="Device ID Start"/>
 		<column colSize="250px" name="devIdEnd" type="devid" minOccurs="1" maxOccurs="1" description="Device ID End"/>
@@ -429,11 +457,11 @@
 	<table tableType="CC" tableWidth="1700px" number="3-16" name="ccUtilDomain" description="NE Domain for Cross Connect Utilities" displayName="Cross Connect Utilities">
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="siglvl" type="siglvlLookupList" minOccurs="1" maxOccurs="1" description="Signal Level">
-		<varTable name="ccParmByType" varColumn="siglvl"></varTable>
+			<varTable name="ccParmByType" varColumn="siglvl"></varTable>
 		</column>
 		<column colSize="250px" name="utility" type="utilities" minOccurs="1" maxOccurs="1" description="Utility"/>
 		<column colSize="400px" name="tl1Cmd" type="script" minOccurs="1" maxOccurs="10" description="TL1 Command">
-			<varTable name="crossConnectParm" varColumn="neParm" storageType="NEPARM"></varTable>			
+			<varTable name="crossConnectParm" varColumn="neParm" storageType="NEPARM"></varTable>
 			<varTable name="crossConnectParm" varColumn="tagName" storageType="TAG"></varTable>
 			<varTable name="crossConnectParm" varColumn="tagName" varMatchColumn="neParm" storageType="TAG=NEPARM"></varTable>
 			<varTable name="ccTermDerivation" varColumn="termination" storageType="TAG">
@@ -487,21 +515,39 @@
 		<column colSize="250px" name="optReqConditional" type="defaultType" minOccurs="1" maxOccurs="1" description="Opt/Req/Conditional"/>
 		<column colSize="400px" name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
 	</table>
-	<table tableType="FT" tableWidth="1300px" number="3-21" name="bmbrCmd" description="Remote Bulk Memory Backup and Restore Commands" displayName="Remote Bulk Memory Backup and Restore Commands">
+	<table tableType="FT" tableWidth="1700px" number="3-21" name="bmbrCmd" description="Remote Bulk Memory Backup and Restore Commands" displayName="Remote Bulk Memory Backup and Restore Commands">
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
-		<column colSize="250px" name="command" type="defaultType" minOccurs="1" maxOccurs="1" description="Commands"/>
-		<column colSize="250px" name="tl1Cmd" type="provCmd" minOccurs="1" maxOccurs="1" description="TL1 Command"/>
-		<column colSize="250px" name="responseFormat" type="defaultType" minOccurs="1" maxOccurs="1" description="Response Format"/>
+		<column colSize="400px" name="command" type="script" minOccurs="1" maxOccurs="1" description="Commands">
+			<varTable name="globalDialogParm" varColumn="tagName" storageType="TAG">
+			</varTable>
+			<varTable name="globalDialogParm" varColumn="tagName" storageType="TAG=NEPARM">
+			</varTable>
+			<varTable name="copyFile" varColumn="tagName" storageType="TAG">
+			</varTable>
+			<varTable name="copyFile" varColumn="tagName" storageType="TAG=NEPARM">
+			</varTable>
+		</column>
+		<column colSize="250px" name="autonomousMessage" type="autonMessages" minOccurs="1" maxOccurs="1" description="Autonomous Message Command"/>
+		<column colSize="250px" name="responseFormat" type="getTextList" minOccurs="1" maxOccurs="1" description="Response Format"/>
 		<column colSize="400px" name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
 	</table>
-	<table tableType="FT" tableWidth="1650px" number="3-22" name="swdlCmd" description="Remote Software Download Commands" displayName="Remote Software Download Commands">
+	<table tableType="FT" tableWidth="2000px" number="3-22" name="swdlCmd" description="Remote Software Download Commands" displayName="Remote Software Download Commands">
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
-		<column colSize="250px" name="swdlStep" type="defaultType" minOccurs="1" maxOccurs="1" description="SWDL Steps/Functions"/>
-		<column colSize="250px" name="command" type="defaultType" minOccurs="1" maxOccurs="1" description="Commands"/>
-		<column colSize="250px" name="tl1Cmd" type="provCmd" minOccurs="1" maxOccurs="1" description="TL1 Command"/>
-		<column colSize="250px" name="responseFormat" type="defaultType" minOccurs="1" maxOccurs="1" description="Response Format"/>
+		<column colSize="250px" name="swdlStep" type="swdlFunctions" minOccurs="1" maxOccurs="1" description="SWDL Steps/Functions"/>
+		<column colSize="400px" name="command" type="script" minOccurs="1" maxOccurs="1" description="Commands">
+			<varTable name="globalDialogParm" varColumn="tagName" storageType="TAG">
+			</varTable>
+			<varTable name="globalDialogParm" varColumn="tagName" storageType="TAG=NEPARM">
+			</varTable>
+			<varTable name="copyFile" varColumn="tagName" storageType="TAG">
+			</varTable>
+			<varTable name="copyFile" varColumn="tagName" storageType="TAG=NEPARM">
+			</varTable>
+		</column>
+		<column colSize="250px" name="autonomousMessage" type="autonMessages" minOccurs="1" maxOccurs="1" description="Autonomous Message Command"/>
+		<column colSize="250px" name="responseFormat" type="getTextList" minOccurs="1" maxOccurs="1" description="Response Format"/>
 		<column colSize="400px" name="notes" type="notes" minOccurs="1" maxOccurs="10" description="Notes"/>
-	</table>	
+	</table>
 	<table tableType="EQ" tableWidth="1900px" number="3-23" name="commonDialog" description="Common Dialog" displayName="Common Dialog Definition">
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
@@ -527,7 +573,7 @@
 		<column colSize="250px" name="rowStatus" type="" minOccurs="1" description="Generic Row Status for all tables"/>
 		<column colSize="250px" name="issue" type="issue" minOccurs="1" description=" issue"/>
 		<column colSize="250px" name="dialogName" type="devcdList" minOccurs="1" maxOccurs="1" description="Dialog Name">
-		<varTable name="commonDialog" varColumn="dialogName"></varTable>
+			<varTable name="commonDialog" varColumn="dialogName"></varTable>
 		</column>
 		<column colSize="250px" name="parmScrLabel" type="defaultType" minOccurs="1" maxOccurs="1" description="Parameter Screen Label"/>
 		<column colSize="250px" name="tagName" type="defaultType" minOccurs="1" maxOccurs="1" description="Tag Name"/>

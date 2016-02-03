@@ -370,7 +370,7 @@ angular.module('gafxmls').directive('gafTextList', function(){
                     ' <tr ng-repeat="item in tlItems">' +
                     '   <td>' +
                     // '<div ng-show="colInfo.hasOwnProperty(\'pattern\')">' +
-                      '     <span editable-text="item.value" style="width:10px" e-pattern="{{colInfo.pattern}}" onbeforesave="checkTLData($data, tlItems.id)" e-name="tLData" e-form="rowform" e-required>' +
+                      '     <span editable-text="item.value" e-style="width:150px" e-pattern="{{colInfo.pattern}}" onbeforesave="checkTLData($data, tlItems.id)" e-name="tLData" e-form="rowform" e-required>' +
                       '       {{ item.value || \'empty\' }}' +
                       '     </span>' +
                     // '</div>' + 
@@ -1311,7 +1311,7 @@ angular.module('gafxmls').directive('gafxmlTable', function(){
                 '</div>';
   var etemplate = '<div class="outer" style="width:{{currentTable.$.tableWidth}}"><div class="innera" style="width:{{currentTable.$.tableWidth}}">' +
                     '<table class="table table-bordered table-striped table-hover table-condensed">' +
-                      '<thead><th class="btn btr-primary" style="width:80px; text-align:center"' +
+                      '<thead><th class="btn btr-primary" style="width:100px; text-align:center"' +
                           '<div class="pull-center">' +
                               '<a class="btn btn-primary btn-sm" data-ng-click="addRow();">' +
                                   '<i class="glyphicon glyphicon-plus"></i>' +
@@ -1323,7 +1323,7 @@ angular.module('gafxmls').directive('gafxmlTable', function(){
                           // '{{getColumnHeaders(cols.$.name)}}&nbsp;<a href="#" custom-sort order="cols.$.name" sort="sort"></a>' +
                           '{{getColumnHeaders(cols.$.name)}}&nbsp;<a href="#"></a>' +
                       '</th>' +
-                      '<th class="btn btr-primary" style="width:80px; text-align:center">' +
+                      '<th class="btn btr-primary" style="width:100px; text-align:center">' +
                           '<div class="pull-center">' +
                               '<a class="btn btn-primary btn-sm" data-ng-click="addRow();">' +
                                   '<i class="glyphicon glyphicon-plus"></i>' +
