@@ -173,7 +173,7 @@
 		<mapping swdlFunction="Verify Software Issue">Verify Software Issue</mapping>
 	</swdlFunctionMappings>
 	<autonMsgDialogMappings mapValue="autonDialogs">
-		<mapping autonDialogs="BULKAUTONMSG">Install Software BMBR</mapping>
+		<mapping autonDialogs="BULKAUTONMSG">BMBR Autonomous Message</mapping>
 		<mapping autonDialogs="COPYPDL_AM">Copy PDL</mapping>
 		<mapping autonDialogs="COPYSWDL_AM">Copy SWDL</mapping>
 		<mapping autonDialogs="INSTSWDL_AM">Install SWDL</mapping>
